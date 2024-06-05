@@ -70,6 +70,90 @@
     {{-- Section Tugas, Materi --}}
     <div class="row ps-4 pe-4 mb-4" id="materi">
         <div class=" col-lg-12 col-md-12">
+            <h3 class=" fw-bold text-primary"><i class="fa-solid fa-book"></i> Pengumuman
+                @if (Auth()->User()->roles_id == 2)
+                    <a
+                        href="{{ route('viewCreatePengumuman', ['token' => encrypt($kelas['id']), 'mapelId' => $mapel['id']]) }}">
+                        <button type="button" class="btn btn-outline-primary">+ Tambah</button>
+
+                    </a>
+                @endif
+            </h3>
+            <div class="p-4 bg-white rounded-3">
+                    {{-- Tabel Pengumuman --}}
+                    <div class="table-responsive col-12">
+                        @if (count($pengumuman) > 0)
+                            <table id="table" class="table table-striped table-hover table-lg p-3">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Nama Pengumuman</th>
+                                        @if (Auth()->User()->roles_id == 2)
+                                            <th scope="col">Tanggal</th>
+                                        @endif
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    @foreach ($pengumuman as $key)
+                                        @if ($key->isHidden != 1 || Auth()->User()->roles_id == 2)
+                                            <tr class=" @if ($key->isHidden == 1) opacity-50 @endif">
+                                                <td>{{ $loop->iteration }}</td>
+                                                <td>
+                                                    {{ $key->name }}
+                                                    @if ($key->isHidden == 1)
+                                                        <i class="fa-solid fa-eye-slash fa-bounce text-danger"></i>
+                                                    @endif
+                                                </td>
+                                                @if (Auth()->User()->roles_id == 2)
+                                                    <td>
+                                                        {{ $key->created_at->format('d F Y H:i') }}
+                                                    </td>
+                                                @endif
+                                                @if (Auth()->User()->roles_id == 2)
+                                                    <td>
+                                                        <a href="{{ route('viewPengumuman', ['token' => encrypt($key->id), 'kelasMapelId' => encrypt($key['kelas_mapel_id']), 'mapelId' => $mapel['id']]) }}"
+                                                            class="badge bg-info p-2 mb-1 animate-btn-small">
+                                                            <i class="fa-regular fa-eye fa-xl"></i>
+                                                        </a>
+                                                        <a href="{{ route('viewUpdatePengumuman', ['token' => encrypt($key->id), 'mapelId' => $mapel['id']]) }}"
+                                                            class="badge bg-secondary p-2 mb-1 animate-btn-small">
+                                                            <i class="fa-solid fa-pen-to-square fa-xl"></i>
+                                                        </a>
+                                                        <a href="#table" class="badge bg-secondary p-2 animate-btn-small">
+                                                            <i class="fa-solid fa-xl fa-trash" data-bs-toggle="modal"
+                                                                data-bs-target="#modalHapusPengumuman"
+                                                                onclick="changeValuePengumuman({{ $key->id }})"></i>
+                                                        </a>
+                                                    </td>
+                                                @else
+                                                    <td>
+                                                        <a
+                                                            href="{{ route('viewPengumuman', ['token' => encrypt($key->id), 'kelasMapelId' => encrypt($key['kelas_mapel_id']), 'mapelId' => $mapel['id']]) }}">
+                                                            <button type="button" class="btn btn-primary"><i
+                                                                    class="fa-regular fa-eye fa-xl"></i>
+                                                                View</button>
+                                                        </a>
+                                                    </td>
+                                                @endif
+                                            </tr>
+                                        @endif
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        @else
+                            <div class="text-center">
+                                <img src="{{ url('/asset/img/not-found.png') }}" alt="" class="img-fluid w-50"
+                                    style="filter: saturate(0);" srcset="">
+                                <br>
+                                <Strong>Belum ada Pengumuman</Strong>
+                            </div>
+                        @endif
+                    </div>
+            </div>
+        </div>
+        <div class=" col-lg-12 col-md-12">
             <h3 class=" fw-bold text-primary"><i class="fa-solid fa-book"></i> Materi
                 @if (Auth()->User()->roles_id == 2)
                     <a
@@ -90,7 +174,7 @@
                                         <th scope="col">#</th>
                                         <th scope="col">Nama Materi</th>
                                         @if (Auth()->User()->roles_id == 2)
-                                            <th scope="col">Created at</th>
+                                            <th scope="col">Tanggal</th>
                                         @endif
                                         <th scope="col">Action</th>
                                     </tr>
@@ -122,7 +206,8 @@
                                                             class="badge bg-secondary p-2 mb-1 animate-btn-small">
                                                             <i class="fa-solid fa-pen-to-square fa-xl"></i>
                                                         </a>
-                                                        <a href="#table" class="badge bg-secondary p-2 animate-btn-small">
+                                                        <a href="#table"
+                                                            class="badge bg-secondary p-2 animate-btn-small">
                                                             <i class="fa-solid fa-xl fa-trash" data-bs-toggle="modal"
                                                                 data-bs-target="#modalHapusMateri"
                                                                 onclick="changeValueMateri({{ $key->id }})"></i>
@@ -190,7 +275,7 @@
                                         <th scope="col">Nama Tugas</th>
                                         <th scope="col">Due Date</th>
                                         @if (Auth()->User()->roles_id == 2)
-                                            <th scope="col">Created at</th>
+                                            <th scope="col">Tanggal</th>
                                         @endif
                                         <th scope="col">Action</th>
                                     </tr>
@@ -285,94 +370,7 @@
             </div>
         </div>
 
-        
-        <div class=" col-lg-12 col-md-12">
-            <h3 class=" fw-bold text-primary"><i class="fa-solid fa-book"></i> Pengumuman
-                @if (Auth()->User()->roles_id == 2)
-                    <a
-                        href="{{ route('viewCreatePengumuman', ['token' => encrypt($kelas['id']), 'mapelId' => $mapel['id']]) }}">
-                        <button type="button" class="btn btn-outline-primary">+ Tambah</button>
 
-                    </a>
-                @endif
-            </h3>
-            <div class="p-4 bg-white rounded-3">
-                <div class="row">
-                    {{-- Tabel Pengumuman --}}
-                    <div class="table-responsive col-lg-6 col-12 p-3" style="max-height: 300px; overflow-y:auto;">
-                        @if (count($pengumuman) > 0)
-                            <table id="table" class="table table-striped table-hover table-lg p-3">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">Nama Pengumuman</th>
-                                        @if (Auth()->User()->roles_id == 2)
-                                            <th scope="col">Created at</th>
-                                        @endif
-                                        <th scope="col">Action</th>
-                                    </tr>
-                                </thead>
-
-                                <tbody>
-                                    @foreach ($Pengumuman as $key)
-                                        @if ($key->isHidden != 1 || Auth()->User()->roles_id == 2)
-                                            <tr class=" @if ($key->isHidden == 1) opacity-50 @endif">
-                                                <td>{{ $loop->iteration }}</td>
-                                                <td>
-                                                    {{ $key->name }}
-                                                    @if ($key->isHidden == 1)
-                                                        <i class="fa-solid fa-eye-slash fa-bounce text-danger"></i>
-                                                    @endif
-                                                </td>
-                                                @if (Auth()->User()->roles_id == 2)
-                                                    <td>
-                                                        {{ $key->created_at->format('d F Y H:i') }}
-                                                    </td>
-                                                @endif
-                                                @if (Auth()->User()->roles_id == 2)
-                                                    <td>
-                                                        <a href="{{ route('viewPengumuman', ['token' => encrypt($key->id), 'kelasMapelId' => encrypt($key['kelas_mapel_id']), 'mapelId' => $mapel['id']]) }}"
-                                                            class="badge bg-info p-2 mb-1 animate-btn-small">
-                                                            <i class="fa-regular fa-eye fa-xl"></i>
-                                                        </a>
-                                                        <a href="{{ route('viewUpdatePengumuman', ['token' => encrypt($key->id), 'mapelId' => $mapel['id']]) }}"
-                                                            class="badge bg-secondary p-2 mb-1 animate-btn-small">
-                                                            <i class="fa-solid fa-pen-to-square fa-xl"></i>
-                                                        </a>
-                                                        <a href="#table" class="badge bg-secondary p-2 animate-btn-small">
-                                                            <i class="fa-solid fa-xl fa-trash" data-bs-toggle="modal"
-                                                                data-bs-target="#modalHapusPengumuman"
-                                                                onclick="changeValuePengumuman({{ $key->id }})"></i>
-                                                        </a>
-                                                    </td>
-                                                @else
-                                                    <td>
-                                                        <a
-                                                            href="{{ route('viewPengumuman', ['token' => encrypt($key->id), 'kelasMapelId' => encrypt($key['kelas_mapel_id']), 'mapelId' => $mapel['id']]) }}">
-                                                            <button type="button" class="btn btn-primary"><i
-                                                                    class="fa-regular fa-eye fa-xl"></i>
-                                                                View</button>
-                                                        </a>
-                                                    </td>
-                                                @endif
-                                            </tr>
-                                        @endif
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        @else
-                            <div class="text-center">
-                                <img src="{{ url('/asset/img/not-found.png') }}" alt="" class="img-fluid w-50"
-                                    style="filter: saturate(0);" srcset="">
-                                <br>
-                                <Strong>Belum ada Rekomendasi</Strong>
-                            </div>
-                        @endif
-                        </div>
-                </div>
-            </div>
-        </div>
-        
         <div class=" col-lg-12 col-md-12">
             <h3 class=" fw-bold text-primary"><i class="fa-solid fa-book"></i> Rekomendasi
                 @if (Auth()->User()->roles_id == 2)
@@ -394,7 +392,7 @@
                                         <th scope="col">#</th>
                                         <th scope="col">Nama Rekomendasi</th>
                                         @if (Auth()->User()->roles_id == 2)
-                                            <th scope="col">Created at</th>
+                                            <th scope="col">Tanggal</th>
                                         @endif
                                         <th scope="col">Action</th>
                                     </tr>
@@ -426,7 +424,8 @@
                                                             class="badge bg-secondary p-2 mb-1 animate-btn-small">
                                                             <i class="fa-solid fa-pen-to-square fa-xl"></i>
                                                         </a>
-                                                        <a href="#table" class="badge bg-secondary p-2 animate-btn-small">
+                                                        <a href="#table"
+                                                            class="badge bg-secondary p-2 animate-btn-small">
                                                             <i class="fa-solid fa-xl fa-trash" data-bs-toggle="modal"
                                                                 data-bs-target="#modalHapusRekomendasi"
                                                                 onclick="changeValueRekomendasi({{ $key->id }})"></i>
@@ -498,7 +497,7 @@
                                 <th scope="col">Jumlah Soal</th>
                                 <th scope="col">Due Date</th>
                                 @if (Auth()->User()->roles_id == 2)
-                                    <th scope="col">Created at</th>
+                                    <th scope="col">Tanggal</th>
                                 @endif
                                 <th scope="col">Action</th>
                             </tr>
@@ -609,6 +608,29 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="modalHapusPengumuman" tabindex="-1" aria-labelledby="modalHapusPengumumanLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalHapusPengumumanLabel">Konfirmasi Hapus</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Apakah Anda yakin ingin menghapus Pengumuman ini?
+                </div>
+                <div class="modal-footer">
+                    <form action="{{ route('destroyPengumuman') }}" method="post">
+                        @csrf
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                        <input type="hidden" name="hapusId" id="pengumumanId" value="">
+                        <input type="hidden" name="kelasMapelId" id="kelasMapelPengumuman" value="">
+                        <button type="submit" class="btn btn-danger">Hapus</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="modal fade" id="modalHapusRekomendasi" tabindex="-1" aria-labelledby="modalHapusRekomendasiLabel"
         aria-hidden="true">
         <div class="modal-dialog">
@@ -622,7 +644,7 @@
                 </div>
                 <div class="modal-footer">
                     <form action="{{ route('destroyRekomendasi') }}" method="post">
-                        @csrf   
+                        @csrf
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
                         <input type="hidden" name="hapusId" id="rekomendasiId" value="">
                         <input type="hidden" name="kelasMapelId" id="kelasMapelRekomendasi" value="">
@@ -694,7 +716,15 @@
             materiId.setAttribute('value', itemId);
             kelasMapelMateri.setAttribute('value', "{{ $kelasMapel['id'] }}");
         }
-        
+
+        function changeValuePengumuman(itemId) {
+            console.log(itemId);
+            const pengumumanId = document.getElementById('pengumumanId');
+            const kelasMapelPengumuman = document.getElementById('kelasMapelPengumuman');
+            pengumumanId.setAttribute('value', itemId);
+            kelasMapelPengumuman.setAttribute('value', "{{ $kelasMapel['id'] }}");
+        }
+
         function changeValueRekomendasi(itemId) {
             console.log(itemId);
             const rekomendasiId = document.getElementById('rekomendasiId');

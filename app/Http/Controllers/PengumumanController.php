@@ -206,15 +206,7 @@ class PengumumanController extends Controller
         // Logika untuk memeriksa apakah pengguna yang sudah login memiliki akses editor
         foreach (Auth()->User()->EditorAccess as $key) {
             if ($key->kelas_mapel_id == $request->kelasMapelId) {
-                $dest = '../public_html/file/pengumuman'; // Destinasi tempat pengguna akan disimpan
-                $files = PengumumanFile::where('pengumuman_id', $pengumumanId)->get();
-                foreach ($files as $key) {
-                    if (file_exists(public_path($dest . '/' . $key->file))) {
-                        unlink(public_path($dest . '/' . $key->file));
-                    }
-                }
                 Pengumuman::where('id', $pengumumanId)->delete();
-                PengumumanFile::where('pengumuman_id', $pengumumanId)->delete();
 
                 return redirect()->back()->with('success', 'Pengumuman Berhasil dihapus');
             }
