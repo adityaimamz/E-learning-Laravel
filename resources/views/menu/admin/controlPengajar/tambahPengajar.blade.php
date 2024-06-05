@@ -78,6 +78,28 @@
                                         </div>
                                     @enderror
                                 </div>
+                                <div class="mb-3">
+                                    <label for="nuptk" class="form-label">NUPTK
+                                        <span class="text-secondary small">(Optional)</span> : </label>
+                                    <input type="number" class="form-control" id="nuptk" name="nuptk"
+                                        placeholder="" value="{{ old('nuptk') }}">
+                                    @error('nuptk')
+                                        <div class="text-danger small">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                </div>
+                                <div class="mb-3">
+                                    <label for="nik" class="form-label">NIK
+                                        <span class="text-secondary small">(Optional)</span> : </label>
+                                    <input type="number" class="form-control" id="nik" name="nik"
+                                        placeholder="" value="{{ old('nik') }}">
+                                    @error('nik')
+                                        <div class="text-danger small">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                </div>
 
                                 {{-- Password --}}
                                 <div class="mb-3">

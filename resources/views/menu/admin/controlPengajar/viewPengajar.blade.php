@@ -89,7 +89,8 @@
                                             <th scope="col">#</th>
                                             <th scope="col">-</th>
                                             <th scope="col">Nama</th>
-
+                                            <th scope="col">Nuptk</th>
+                                            <th scope="col">Nik</th>
                                             <th scope="col">Mengajar</th>
                                             <th scope="col">Email</th>
                                             <th scope="col">No Telp</th>
@@ -111,6 +112,8 @@
                                                     @endif
                                                 </td>
                                                 <td>{{ $key->name }}</td>
+                                                <td>{{ $key->Contact->nuptk }}</td>
+                                                <td>{{ $key->Contact->nik }}</td>
                                                 @if ($key->EditorAccess)
                                                     <td>{{ count($key->EditorAccess) }} Kelas</td>
                                                 @else

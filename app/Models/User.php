@@ -101,4 +101,21 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserCommit::class);
     }
+
+    public function sentMessages()
+    {
+        return $this->hasMany(Message::class, 'from_user_id');
+    }
+
+    public function receivedMessages()
+    {
+        return $this->hasMany(Message::class, 'to_user_id');
+    }
+
+    // Jika ingin mendapatkan semua pesan, baik yang dikirim maupun diterima
+    public function messages()
+    {
+        return $this->hasMany(Message::class, 'from_user_id')
+                    ->orWhere('to_user_id', $this->id);
+    }
 }

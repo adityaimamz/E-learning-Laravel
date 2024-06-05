@@ -12,6 +12,8 @@
                         <th scope="col">Mapel</th>
                         <th scope="col">Email</th>
                         <th scope="col">No Telp</th>
+                        <th scope="col">Nuptk</th>
+                        <th scope="col">Nik</th>
                         <th scope="col">Action</th>
                     </tr>
                 </thead>
@@ -38,6 +40,8 @@
                             <td>Mapel</td>
                             <td>{{ Str::substr($key->email, 0, 7) }}...</td>
                             <td>{{ $key->Contact->no_telp }} </td>
+                            <td>{{ $key->Contact->nuptk }}</td>
+                            <td>{{ $key->Contact->nik }}</td>
                             <td>
                                 <a href="{{ route('viewProfileAdmin', ['token' => encrypt($key->id)]) }}"
                                     class="badge bg-info p-2 mb-1 animate-btn-small"><i

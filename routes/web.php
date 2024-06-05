@@ -33,6 +33,23 @@ Route::get('/', function () {
     return redirect('/dashboard');
 });
 
+Route::get('/room-chat', function () {
+    $roles = \App\Http\Controllers\DashboardController::getRolesName();
+    $assignedKelas = \App\Http\Controllers\DashboardController::getAssignedClass();
+    $profile = App\Models\User::findOrFail(Auth()->User()->id);
+    $kelas = App\Models\Kelas::where('id', $profile->kelas_id)->first();
+
+    return view('menu.chat', [
+        'users' => \App\Models\User::where('id', '!=', auth()->id())->get(),
+        'title' => 'Chat',
+        'roles' => $roles,
+        'assignedKelas' => $assignedKelas,
+        'kelas' => $kelas
+    ]);
+})->middleware('auth')->name('room-chat');
+
+// Route::get('chat/{user}', \App\Livewire\Chat::class)->middleware('auth')->name('chat');
+
 Route::controller(AdminRegisterController::class)->group(function () {
     Route::get('/admin-register', 'viewAdminRegister')->middleware('guest')->name('adminRegister');
     Route::post('/regist-admin', 'registAdmin')->middleware('guest')->name('registAdmin');

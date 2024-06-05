@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('contacts', function (Blueprint $table) {
             $table->foreignid('user_id');
             $table->string('no_telp')->nullable();
+            $table->string('nuptk')->nullable();
+            $table->string('nik')->nullable();
             $table->timestamps();
         });
     }

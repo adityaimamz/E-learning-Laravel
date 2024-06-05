@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Maatwebsite\Excel\Facades\Excel;
 
+
 class PengajarController extends Controller
 {
     public $array = [];
@@ -72,6 +73,8 @@ class PengajarController extends Controller
         $data = [
             'nama' => $request->nama,
             'noTelp' => $request->noTelp,
+            'nuptk' => $request->nuptk,
+            'nik' => $request->nik,
             'email' => $request->email,
             'password' => $request->password,
         ];
@@ -130,11 +133,15 @@ class PengajarController extends Controller
             Contact::create([
                 'user_id' => $userId,
                 'no_telp' => $request->noTelp,
+                'nuptk' => $request->nuptk,
+                'nik' => $request->nik,
             ]);
         } else {
             Contact::create([
                 'user_id' => $userId,
                 'no_telp' => null,
+                'nuptk' => null,
+                'nik' => null,
             ]);
         }
 
@@ -234,6 +241,8 @@ class PengajarController extends Controller
 
         Contact::where('user_id', $data['id'])->update([
             'no_telp' => $request->noTelp,
+            'nuptk' => $request->nuptk,
+            'nik' => $request->nik,
         ]);
 
         return redirect()->back()->with('success', 'Update berhasil!');

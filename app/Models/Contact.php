@@ -12,8 +12,8 @@ class Contact extends Model
     protected $fillable = [
         'no_telp',
         'user_id',
-        'nama_wali',
-        'no_telp_wali',
+        'nuptk',
+        'nik',
     ];
 
     protected $guarded = [

@@ -105,6 +105,10 @@
                  </div>
              </li>
          @endforeach
+         <li class="nav-item {{ Request::is('room-chat*') ? 'active' : '' }} animate-btn">
+            <a class="nav-link" href="/room-chat"> <i class="fa-solid fa-chalkboard-user"></i>
+                <span>Chat</span></a>
+        </li>
      @endif
 
      {{-- SISWA --}}
@@ -124,6 +128,10 @@
                      </a>
                  </li>
              @endforeach
+             <li class="nav-item {{ Request::is('room-chat*') ? 'active' : '' }} animate-btn">
+                <a class="nav-link" href="/room-chat"> <i class="fa-solid fa-chalkboard-user"></i>
+                    <span>Chat</span></a>
+            </li>
          @endif
      @endunless
 
