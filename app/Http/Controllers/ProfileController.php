@@ -120,39 +120,40 @@ class ProfileController extends Controller
      */
 
 
-    public function cropImageUser(Request $request)
-    {
-        $request->validate([
-            'file' => 'file|image|max:4000',
-        ]);
-
-        if ($request->hasFile('file')) {
-            $file = $request->file('file');
-            $newImageName = 'UIMG' . date('YmdHis') . uniqid() . '.jpg'; // Nama baru
-
-            // Simpan file ke dalam penyimpanan
-            $path = $file->storeAs('user-images', $newImageName, 'public');
-
-            if (!$path) {
-                return response()->json(['status' => 0, 'msg' => 'Upload Gagal']);
-            }
-
-            // Hapus file gambar lama dari penyimpanan
-            $userInfo = User::find($request->id);
-            $userPhoto = $userInfo->gambar;
-
-            if ($userPhoto != null) {
-                Storage::disk('public')->delete('user-images/' . $userPhoto);
-            }
-
-            // Perbarui gambar
-            $userInfo->update(['gambar' => $newImageName]);
-
-            return response()->json(['status' => 1, 'msg' => 'Upload berhasil', 'name' => $newImageName]);
-        }
-
-        return response()->json(['status' => 0, 'msg' => 'Tidak ada file yang diunggah']);
-    }
+     public function cropImageUser(Request $request)
+     {
+         $request->validate([
+             'file' => 'file|image|max:4000',
+         ]);
+     
+         if ($request->hasFile('file')) {
+             $file = $request->file('file');
+             $newImageName = 'UIMG' . date('YmdHis') . uniqid() . '.jpg'; // Nama baru
+     
+             // Simpan file ke dalam folder public/img-upload
+             $path = $file->move(public_path('img-upload'), $newImageName);
+     
+             if (!$path) {
+                 return response()->json(['status' => 0, 'msg' => 'Upload Gagal']);
+             }
+     
+             // Hapus file gambar lama dari penyimpanan
+             $userInfo = User::find($request->id);
+             $userPhoto = $userInfo->gambar;
+     
+             if ($userPhoto != null && file_exists(public_path('img-upload/' . $userPhoto))) {
+                 unlink(public_path('img-upload/' . $userPhoto));
+             }
+     
+             // Perbarui gambar
+             $userInfo->update(['gambar' => $newImageName]);
+     
+             return response()->json(['status' => 1, 'msg' => 'Upload berhasil', 'name' => $newImageName]);
+         }
+     
+         return response()->json(['status' => 0, 'msg' => 'Tidak ada file yang diunggah']);
+     }
+     
 
 
     /**

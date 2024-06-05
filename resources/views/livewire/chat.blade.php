@@ -18,8 +18,8 @@
                             <a href="#" wire:click.prevent="selectUser({{ $user->id }})" class="d-flex justify-content-between">
                                 <div class="d-flex flex-row">
                                     <div>
-                                        <img src="{{ $user->gambar ? $user->gambar : 'https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp' }}"
-                                            alt="avatar" class="d-flex align-self-center me-3" width="60">
+                                        <img src="{{ $user->gambar ?  asset('img-upload/' . $user->gambar) : 'https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp' }}"
+                                            alt="avatar" class="d-flex align-self-center me-3" style="border-radius: 50%" width="60">
                                         <span class="badge bg-success badge-dot"></span>
                                     </div>
                                     <div class="pt-1">
@@ -46,7 +46,7 @@
                 @foreach ($messages as $message)
                     <div class="d-flex flex-row {{ $message->from_user_id == Auth::id() ? 'justify-content-end' : 'justify-content-start' }}">
                         @if ($message->from_user_id != Auth::id())
-                            <img src="{{ $message->fromUser->gambar ? $message->fromUser->gambar : 'https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp' }}" alt="avatar 1" style="width: 45px; height: 100%;">
+                            <img src="{{ $message->fromUser->gambar ? asset('img-upload/' . $message->fromUser->gambar) : 'https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp' }}" alt="avatar 1" style="width: 45px; height: 100%; border-radius: 50%;">
                         @endif
                         <div>
                             <p class="small p-2 ms-3 mb-1 rounded-3 {{ $message->from_user_id == Auth::id() ? 'bg-primary text-white' : 'bg-light text-dark' }}">
@@ -55,7 +55,7 @@
                             <p class="small ms-3 mb-3 rounded-3 text-muted">{{ $message->created_at->format('h:i A | M d') }}</p>
                         </div>
                         @if ($message->from_user_id == Auth::id())
-                            <img src="{{ $message->fromUser->gambar ? $message->fromUser->gambar : 'https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp' }}" alt="avatar 1" style="width: 45px; height: 100%;">
+                            <img src="{{ $message->fromUser->gambar ? asset('img-upload/' . $message->fromUser->gambar) : 'https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp' }}" alt="avatar 1" style="width: 45px; height: 100%; border-radius: 50%;">
                         @endif
                     </div>
                 @endforeach

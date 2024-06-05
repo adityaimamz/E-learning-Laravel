@@ -129,7 +129,7 @@
                                     <img src="/asset/icons/profile-women.svg"
                                         class="image-previewer image-class rounded-circle" width="250" alt="">
                                 @else
-                                    <img src="{{ asset('storage/user-images/' . Auth()->User()->gambar) }}"
+                                    <img src="{{ asset('img-upload/' . Auth()->User()->gambar) }}"
                                         alt="placeholder" class="image-class rounded-circle h-50 w-50" loading="lazy">
                                 @endif
                             </div>
@@ -168,7 +168,7 @@
                                     {{-- Gambar Mapel --}}
                                     @if ($mapelKelasItem['mapel']->gambar != null)
                                         <div class="card-img-full h-100"
-                                            style="background-image: url('{{ asset('storage/mapel/' . $mapelKelasItem['mapel']->gambar) }}'); background-size: cover;">
+                                            style="background-image: url('{{ asset('img-upload/' . $mapelKelasItem['mapel']->gambar) }}'); background-size: cover;">
                                         </div>
                                     @else
                                         <div class="card-img-full h-100"

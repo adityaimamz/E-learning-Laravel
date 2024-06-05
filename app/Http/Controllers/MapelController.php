@@ -231,35 +231,36 @@ class MapelController extends Controller
         $request->validate([
             'file' => 'file|image|max:4000',
         ]);
-
+    
         if ($request->hasFile('file')) {
             $file = $request->file('file');
             $newImageName = 'UIMG' . date('YmdHis') . uniqid() . '.jpg'; // Nama gambar baru
-
-            // Simpan file ke direktori penyimpanan (storage)
-            $filePath = $file->storeAs('mapel', $newImageName, 'public');
-
+    
+            // Simpan file ke dalam folder public/img-upload
+            $filePath = $file->move(public_path('img-upload'), $newImageName);
+    
             if (!$filePath) {
                 return response()->json(['status' => 0, 'msg' => 'Upload gagal']);
             } else {
                 // Hapus gambar lama jika ada
-                $userInfo = Mapel::where('id', $request->id)->first();
-                $userPhoto = $userInfo->gambar;
-
-                if ($userPhoto != null) {
+                $mapelInfo = Mapel::where('id', $request->id)->first();
+                $mapelPhoto = $mapelInfo->gambar;
+    
+                if ($mapelPhoto != null && file_exists(public_path('img-upload/' . $mapelPhoto))) {
                     // Hapus gambar lama dari penyimpanan
-                    Storage::disk('public')->delete('mapel/' . $userPhoto);
+                    unlink(public_path('img-upload/' . $mapelPhoto));
                 }
-
+    
                 // Perbarui gambar
-                Mapel::where('id', $request->id)->update(['gambar' => $newImageName]);
-
+                $mapelInfo->update(['gambar' => $newImageName]);
+    
                 return response()->json(['status' => 1, 'msg' => 'Upload berhasil', 'name' => $newImageName]);
             }
         }
-
+    
         return response()->json(['status' => 0, 'msg' => 'Tidak ada file yang diunggah']);
     }
+    
 
     /**
      * Mencari kelas-mapel yang terkait dengan kelas tertentu.

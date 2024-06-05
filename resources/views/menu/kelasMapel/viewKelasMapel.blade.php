@@ -43,7 +43,7 @@
             <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
                 <div class="col-10 col-sm-8 col-lg-6">
                     @if ($mapel['gambar'] != null)
-                        <img src="{{ asset('storage/mapel/' . $mapel['gambar']) }}"
+                        <img src="{{ asset('img-upload/' . $mapel['gambar']) }}"
                             class="d-block mx-lg-auto img-fluid w-100 rounded-3" alt="Bootstrap Themes" loading="lazy">
                     @else
                         <img src="{{ url('/asset/img/work.png') }}" class="d-block mx-lg-auto img-fluid h-50 w-50 "

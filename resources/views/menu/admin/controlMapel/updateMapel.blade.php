@@ -44,7 +44,7 @@
                                                 class="image-previewer mx-auto image-class rounded-2 img-fluid"
                                                 width="250" alt="">
                                         @else
-                                            <img src="{{ url('storage/mapel/' . $mapel->gambar) }}"
+                                            <img src="{{ url('img-upload/' . $mapel->gambar) }}"
                                                 class="image-previewer mx-auto image-class rounded-2 img-fluid"
                                                 width="250" alt="">
                                         @endif

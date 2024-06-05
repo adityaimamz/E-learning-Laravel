@@ -107,7 +107,7 @@
                                                         <img src="/asset/icons/profile-men.svg" width="50"
                                                             class="rounded-circle" alt="">
                                                     @else
-                                                        <img src="{{ asset('storage/user-images/' . $key->gambar) }}"
+                                                        <img src="{{ asset('img-upload/' . $key->gambar) }}"
                                                             class="rounded-circle" width="50" alt="">
                                                     @endif
                                                 </td>

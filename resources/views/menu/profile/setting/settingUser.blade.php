@@ -53,7 +53,7 @@
                                                         class="image-previewer mx-auto image-class rounded-circle img-fluid"
                                                         width="250" alt="">
                                                 @else
-                                                    <img src="{{ asset('storage/user-images/' . $user->gambar) }}"
+                                                    <img src="{{ asset('img-upload/' . $user->gambar) }}"
                                                         class="image-previewer mx-auto image-class rounded-circle img-fluid"
                                                         width="250" alt="">
                                                 @endif

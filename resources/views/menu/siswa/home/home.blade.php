@@ -53,7 +53,7 @@
                                 <img src="/asset/icons/profile-women.svg" class="image-previewer image-class rounded-circle"
                                     width="150" alt="">
                             @else
-                                <img src="{{ asset('storage/user-images/' . $user->gambar) }}" alt="placeholder"
+                                <img src="{{ asset('img-upload/' . $user->gambar) }}" alt="placeholder"
                                     class="image-previewer image-class rounded-circle" width="150">
                             @endif
                         </div>
@@ -88,7 +88,7 @@
                             {{-- {{ dd($mapelKelasItem) }} --}}
                             <div class="card w-100 my-4" style="width: 18rem;">
                                 @if ($mapelKelasItem['gambar'] != null)
-                                    <img src="{{ asset('storage/mapel/' . $mapelKelasItem['gambar']) }}"
+                                    <img src="{{ asset('img-upload/' . $mapelKelasItem['gambar']) }}"
                                         class="card-img-top" height="150px" alt="...">
                                 @else
                                     <img src="{{ url('/asset/img/placeholder-3.jpg') }}" class="card-img-top" alt="..."
@@ -134,7 +134,7 @@
 
                                     @if ($mapelKelasItem['gambar'] != null)
                                         <div class="card-img-full"
-                                            style="background-image: url('{{ asset('storage/mapel/' . $mapelKelasItem['gambar']) }}')">
+                                            style="background-image: url('{{ asset('img-upload/' . $mapelKelasItem['gambar']) }}')">
                                         </div>
                                     @else
                                         <div class="card-img-full"

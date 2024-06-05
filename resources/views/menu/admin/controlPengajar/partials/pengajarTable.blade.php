@@ -27,7 +27,7 @@
                                     <img src="/asset/icons/profile-women.svg" width="50" alt=""
                                         class="rounded-circle">
                                 @else
-                                    <img src="{{ asset('storage/user-images/' . $key->gambar) }}" width="50"
+                                    <img src="{{ asset('img-upload/' . $key->gambar) }}" width="50"
                                         class="rounded-circle" alt="">
                                 @endif
                             </td>

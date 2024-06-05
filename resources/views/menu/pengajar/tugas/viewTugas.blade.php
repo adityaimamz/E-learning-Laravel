@@ -395,7 +395,7 @@
                                     <img src="/asset/icons/profile-women.svg" class="rounded-circle  img-fluid"
                                         alt="">
                                 @else
-                                    <img src="{{ asset('storage/user-images/' . $editor->gambar) }}" alt="placeholder"
+                                    <img src="{{ asset('img-upload/' . $editor->gambar) }}" alt="placeholder"
                                         class="rounded-circle  img-fluid">
                                 @endif
                             </div>

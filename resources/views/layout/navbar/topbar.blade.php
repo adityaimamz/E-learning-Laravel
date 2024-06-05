@@ -39,7 +39,7 @@
                      <img src="/asset/icons/profile-women.svg" class="img-profile rounded-circle me-2" alt="">
                  @else
                      <img class="img-profile rounded-circle me-2"
-                         src="{{ asset('storage/user-images/' . Auth()->user()->gambar) }}">
+                         src="{{ asset('img-upload/' . Auth()->user()->gambar) }}">
                  @endif
              </a>
              <!-- Dropdown - User Information -->

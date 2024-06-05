@@ -38,7 +38,7 @@
                                 <img src="/asset/icons/profile-women.svg" class="image-previewer image-class rounded-circle"
                                     width="150" alt="">
                             @else
-                                <img src="{{ asset('/storage/user-images/' . $user->gambar) }}" alt="placeholder"
+                                <img src="{{ asset('/img-upload/' . $user->gambar) }}" alt="placeholder"
                                     class="image-previewer image-class rounded-circle" width="150">
                             @endif
                         </div>
@@ -146,7 +146,7 @@
                         @foreach ($mapelKelas as $mapelKelasItem)
                             <div class="card w-100 my-4" style="width: 18rem;">
                                 @if ($mapelKelasItem['mapel']->gambar != null)
-                                    <img src="{{ url('storage/mapel/' . $mapelKelasItem['mapel']->gambar) }}"
+                                    <img src="{{ url('img-upload/' . $mapelKelasItem['mapel']->gambar) }}"
                                         class="card-img-top" height="150px" alt="...">
                                 @else
                                     <img src="{{ url('/asset/img/placeholder-3.jpg') }}" class="card-img-top"
@@ -182,7 +182,7 @@
                                 <div class="col-md-4">
                                     @if ($mapelKelasItem['mapel']->gambar != null)
                                         <div class="card-img-full"
-                                            style="background-image: url('{{ asset('storage/mapel/' . $mapelKelasItem['mapel']->gambar) }}')">
+                                            style="background-image: url('{{ asset('img-upload/' . $mapelKelasItem['mapel']->gambar) }}')">
                                         </div>
                                     @else
                                         <div class="card-img-full"

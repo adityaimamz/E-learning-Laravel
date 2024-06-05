@@ -48,7 +48,7 @@
                                                         class="image-previewer mx-auto image-class rounded-circle img-fluid"
                                                         width="250" alt="">
                                                 @else
-                                                    <img src="{{ url('storage/user-images/' . $user->gambar) }}"
+                                                    <img src="{{ url('img-upload/' . $user->gambar) }}"
                                                         class="image-previewer mx-auto image-class rounded-circle img-fluid"
                                                         width="250" alt="">
                                                 @endif
