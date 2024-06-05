@@ -8,4 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Pengumuman extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'kelas_mapel_id',
+        'name',
+        'content',
+        'isHidden',
+    ];
+
+    protected $guarded = [
+        'id',
+    ];
 }

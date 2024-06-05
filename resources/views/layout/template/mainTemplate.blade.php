@@ -71,8 +71,7 @@
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <strong>Academify-CBT</strong> made by Oktaven Software 2023 discover more
-                        built-in app via <a href="#">This Link</a>
+                        <strong>Learning Management System</strong> | <a href="https://smpnurulislam.sch.id/">SMP Nurul Islam</a>
                     </div>
                 </div>
             </footer>

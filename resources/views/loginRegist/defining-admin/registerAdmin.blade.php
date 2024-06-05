@@ -26,7 +26,7 @@
                     <img src="asset/img/illustration-1.jpg" width="400px" class=" img-fluid" alt="">
                 </div>
                 <div class="col-12 mt-4">
-                    <img src="asset/img/cbt-b.png" width="400px" class="img-fluid" alt="">
+                <img src="asset/img/LMS-SMP.png" width="400px" class="img-fluid" alt="">
                 </div>
                 <div class="card px-1 py-4 mt-4">
                     <div class="card-body">
@@ -36,7 +36,7 @@
                             <div class="row">
                                 <div class="col-sm-12 mb-3">
                                     <h1>Registrasi Admin (One Time)</h1>
-                                    <span class="text-secondary">Admin Academify-CBT hanya berjumlah satu dan akan
+                                    <span class="text-secondary">Admin hanya berjumlah satu dan akan
                                         mewakili seluruh kegiatan pengelolaan data, pastikan data yang akan disimpan
                                         merupakan data yang global untuk instansi atau orang-orang yang memiliki
                                         wewenang.</span>

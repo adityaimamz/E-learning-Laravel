@@ -6,11 +6,11 @@
              {{-- <div class=" col-sm-3 d-sm-block d-none"><img class="img-fluid" src="asset/img/logo.png" alt="">
              </div> --}}
              <div class=" my-auto col-sm-12 d-none d-sm-block text-center"><img class="img-fluid w-75"
-                     src="{{ url('/asset/img/cbt.png') }}" alt="">
+                     src="{{ url('/asset/img/Logo.png') }}" alt="">
              </div>
 
              <div class=" my-auto col-12 d-block d-sm-none text-center"><img class="img-fluid w-75"
-                     src="{{ url('/asset/img/cbt.png') }}" alt="">
+                     src="{{ url('/asset/img/Logo.png') }}" alt="">
              </div>
          </div>
      </a>

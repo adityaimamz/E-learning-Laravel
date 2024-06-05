@@ -9,6 +9,7 @@ use App\Http\Controllers\KelasMapelController;
 use App\Http\Controllers\LoginRegistController;
 use App\Http\Controllers\MapelController;
 use App\Http\Controllers\MateriController;
+use App\Http\Controllers\PengumumanController;
 use App\Http\Controllers\RekomendasiController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\PengajarController;
@@ -114,7 +115,18 @@ Route::controller(MateriController::class)->group(function () {
     Route::post('/destroy-materi-file', 'destroyFileMateri')->middleware('auth')->name('destroyFileMateri');
     Route::get('/redirect-after', 'redirectBack')->middleware('auth')->name('redirectBack');
 });
-// Materi
+// Pengumuman
+Route::controller(PengumumanController::class)->group(function () {
+    // Get
+    Route::get('/pengumuman/add/{token}', 'viewCreatePengumuman')->middleware('pengajar')->name('viewCreatePengumuman');
+    Route::get('/pengumuman/update/{token}', 'viewUpdatePengumuman')->middleware('pengajar')->name('viewUpdatePengumuman');
+    Route::post('/store-pengumuman', 'createPengumuman')->middleware('pengajar')->name('createPengumuman');
+    Route::post('/update-pengumuman', 'updatePengumuman')->middleware('pengajar')->name('updatePengumuman');
+    Route::post('/destroy-pengumuman', 'destroyPengumuman')->middleware('pengajar')->name('destroyPengumuman');
+
+    Route::get('/pengumuman', 'viewPengumuman')->middleware('auth')->name('viewPengumuman');
+});
+// Rekomendasi
 Route::controller(RekomendasiController::class)->group(function () {
     // Get
     Route::get('/rekomendasi/add/{token}', 'viewCreateRekomendasi')->middleware('pengajar')->name('viewCreateRekomendasi');
