@@ -118,4 +118,9 @@ class User extends Authenticatable
         return $this->hasMany(Message::class, 'from_user_id')
                     ->orWhere('to_user_id', $this->id);
     }
+
+    public function Komentar()
+    {
+        return $this->hasMany(Komentar::class);
+    }
 }

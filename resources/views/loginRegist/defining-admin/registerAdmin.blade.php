@@ -106,8 +106,7 @@
         </div>
         <div class="text-center">
             <hr>
-            <strong>Academify-CBT</strong> made by CV.Kodevio IT Performance 2023 discover more
-            built-in app via <a href="#">This Link</a>
+            <strong>Learning Management System</strong> | <a href="https://smpnurulislam.sch.id/">SMP Nurul Islam</a>
         </div>
     </div>
     <script src="https://kit.fontawesome.com/68f43c1324.js" crossorigin="anonymous"></script>

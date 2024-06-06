@@ -5,8 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Materi extends Model
+class Diskusi extends Model
 {
+   
     use HasFactory;
 
     protected $fillable = [
@@ -25,14 +26,8 @@ class Materi extends Model
         return $this->belongsTo(KelasMapel::class);
     }
 
-
-    public function MateriFile()
+    public function Komentar()
     {
-        return $this->hasMany(MateriFile::class);
-    }
-
-    public function UserMateri()
-    {
-        return $this->hasMany(UserMateri::class);
+        return $this->hasMany(Komentar::class);
     }
 }

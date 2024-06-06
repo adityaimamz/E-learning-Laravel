@@ -11,6 +11,7 @@ use App\Http\Controllers\MapelController;
 use App\Http\Controllers\MateriController;
 use App\Http\Controllers\PengumumanController;
 use App\Http\Controllers\RekomendasiController;
+use App\Http\Controllers\DiskusiController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\PengajarController;
 use App\Http\Controllers\ProfileController;
@@ -142,6 +143,17 @@ Route::controller(PengumumanController::class)->group(function () {
     Route::post('/destroy-pengumuman', 'destroyPengumuman')->middleware('pengajar')->name('destroyPengumuman');
 
     Route::get('/pengumuman', 'viewPengumuman')->middleware('auth')->name('viewPengumuman');
+});
+// Diskusi
+Route::controller(DiskusiController::class)->group(function () {
+    // Get
+    Route::get('/diskusi/add/{token}', 'viewCreateDiskusi')->middleware('pengajar')->name('viewCreateDiskusi');
+    Route::get('/diskusi/update/{token}', 'viewUpdateDiskusi')->middleware('pengajar')->name('viewUpdateDiskusi');
+    Route::post('/store-diskusi', 'createDiskusi')->middleware('pengajar')->name('createDiskusi');
+    Route::post('/update-diskusi', 'updateDiskusi')->middleware('pengajar')->name('updateDiskusi');
+    Route::post('/destroy-diskusi', 'destroyDiskusi')->middleware('pengajar')->name('destroyDiskusi');
+
+    Route::get('/diskusi', 'viewDiskusi')->middleware('auth')->name('viewDiskusi');
 });
 // Rekomendasi
 Route::controller(RekomendasiController::class)->group(function () {

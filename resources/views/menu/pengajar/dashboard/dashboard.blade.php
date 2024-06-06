@@ -63,7 +63,7 @@
                 </div>
 
                 {{-- Total Siswa --}}
-                <div class="col-lg-3 col-6">
+                {{-- <div class="col-lg-3 col-6">
                     <div class="p-4 border border-primary rounded-2">
                         <div class="text-center">
                             <img src="{{ url('/asset/img/student-icon.svg') }}" alt="" class="img-fluid w-50"
@@ -73,21 +73,21 @@
                             <h1 class="display-3 text-primary fw-bold d-block">{{ $totalSiswa }}</h1>
                         </div>
                     </div>
-                </div>
+                </div> --}}
                 {{-- Total Siswa Unik --}}
-                <div class="col-lg-3  col-6">
+                <div class="col-lg-4  col-6">
                     <div class="p-4 border border-primary rounded-2">
                         <div class="text-center">
                             <img src="{{ url('/asset/img/unique-user.svg') }}" alt="" class="img-fluid w-50"
                                 srcset="" width="100px" style="max-width: 100px;">
                             <br>
-                            <Strong class="fs-5 text-primary d-block">Siswa Unique</Strong>
+                            <Strong class="fs-5 text-primary d-block">Total Siswa</Strong>
                             <h1 class="display-3 text-primary fw-bold d-block">{{ $totalSiswaUnique }}</h1>
                         </div>
                     </div>
                 </div>
                 {{-- Total mapel --}}
-                <div class="col-lg-3  col-6">
+                <div class="col-lg-4  col-6">
                     <div class="p-4 border border-primary rounded-2">
                         <div class="text-center">
                             <img src="{{ url('/asset/img/mapel-icon.svg') }}" alt="" class="img-fluid w-50"
@@ -99,7 +99,7 @@
                     </div>
                 </div>
                 {{-- Total kelas --}}
-                <div class="col-lg-3 col-6">
+                <div class="col-lg-4 col-6">
                     <div class="p-4 border border-primary rounded-2">
                         <div class="text-center">
                             <img src="{{ url('/asset/img/kelas-icon.svg') }}" alt="" class="img-fluid w-50"

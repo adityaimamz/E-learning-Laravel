@@ -70,7 +70,7 @@
     {{-- Section Tugas, Materi --}}
     <div class="row ps-4 pe-4 mb-4" id="materi">
         <div class=" col-lg-12 col-md-12">
-            <h3 class=" fw-bold text-primary"><i class="fa-solid fa-book"></i> Pengumuman
+            <h3 class=" fw-bold text-primary"><i class="fa-solid fa-bullhorn"></i> Pengumuman
                 @if (Auth()->User()->roles_id == 2)
                     <a
                         href="{{ route('viewCreatePengumuman', ['token' => encrypt($kelas['id']), 'mapelId' => $mapel['id']]) }}">
@@ -80,80 +80,80 @@
                 @endif
             </h3>
             <div class="p-4 bg-white rounded-3">
-                    {{-- Tabel Pengumuman --}}
-                    <div class="table-responsive col-12">
-                        @if (count($pengumuman) > 0)
-                            <table id="table" class="table table-striped table-hover table-lg p-3">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">Nama Pengumuman</th>
-                                        @if (Auth()->User()->roles_id == 2)
-                                            <th scope="col">Tanggal</th>
-                                        @endif
-                                        <th scope="col">Action</th>
-                                    </tr>
-                                </thead>
+                {{-- Tabel Pengumuman --}}
+                <div class="table-responsive col-12">
+                    @if (count($pengumuman) > 0)
+                        <table id="table" class="table table-striped table-hover table-lg p-3">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Nama Pengumuman</th>
+                                    @if (Auth()->User()->roles_id == 2)
+                                        <th scope="col">Tanggal</th>
+                                    @endif
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
 
-                                <tbody>
-                                    @foreach ($pengumuman as $key)
-                                        @if ($key->isHidden != 1 || Auth()->User()->roles_id == 2)
-                                            <tr class=" @if ($key->isHidden == 1) opacity-50 @endif">
-                                                <td>{{ $loop->iteration }}</td>
+                            <tbody>
+                                @foreach ($pengumuman as $key)
+                                    @if ($key->isHidden != 1 || Auth()->User()->roles_id == 2)
+                                        <tr class=" @if ($key->isHidden == 1) opacity-50 @endif">
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>
+                                                {{ $key->name }}
+                                                @if ($key->isHidden == 1)
+                                                    <i class="fa-solid fa-eye-slash fa-bounce text-danger"></i>
+                                                @endif
+                                            </td>
+                                            @if (Auth()->User()->roles_id == 2)
                                                 <td>
-                                                    {{ $key->name }}
-                                                    @if ($key->isHidden == 1)
-                                                        <i class="fa-solid fa-eye-slash fa-bounce text-danger"></i>
-                                                    @endif
+                                                    {{ $key->created_at->format('d F Y H:i') }}
                                                 </td>
-                                                @if (Auth()->User()->roles_id == 2)
-                                                    <td>
-                                                        {{ $key->created_at->format('d F Y H:i') }}
-                                                    </td>
-                                                @endif
-                                                @if (Auth()->User()->roles_id == 2)
-                                                    <td>
-                                                        <a href="{{ route('viewPengumuman', ['token' => encrypt($key->id), 'kelasMapelId' => encrypt($key['kelas_mapel_id']), 'mapelId' => $mapel['id']]) }}"
-                                                            class="badge bg-info p-2 mb-1 animate-btn-small">
-                                                            <i class="fa-regular fa-eye fa-xl"></i>
-                                                        </a>
-                                                        <a href="{{ route('viewUpdatePengumuman', ['token' => encrypt($key->id), 'mapelId' => $mapel['id']]) }}"
-                                                            class="badge bg-secondary p-2 mb-1 animate-btn-small">
-                                                            <i class="fa-solid fa-pen-to-square fa-xl"></i>
-                                                        </a>
-                                                        <a href="#table" class="badge bg-secondary p-2 animate-btn-small">
-                                                            <i class="fa-solid fa-xl fa-trash" data-bs-toggle="modal"
-                                                                data-bs-target="#modalHapusPengumuman"
-                                                                onclick="changeValuePengumuman({{ $key->id }})"></i>
-                                                        </a>
-                                                    </td>
-                                                @else
-                                                    <td>
-                                                        <a
-                                                            href="{{ route('viewPengumuman', ['token' => encrypt($key->id), 'kelasMapelId' => encrypt($key['kelas_mapel_id']), 'mapelId' => $mapel['id']]) }}">
-                                                            <button type="button" class="btn btn-primary"><i
-                                                                    class="fa-regular fa-eye fa-xl"></i>
-                                                                View</button>
-                                                        </a>
-                                                    </td>
-                                                @endif
-                                            </tr>
-                                        @endif
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        @else
-                            <div class="text-center">
-                                <img src="{{ url('/asset/img/not-found.png') }}" alt="" class="img-fluid w-50"
-                                    style="filter: saturate(0);" srcset="">
-                                <br>
-                                <Strong>Belum ada Pengumuman</Strong>
-                            </div>
-                        @endif
-                    </div>
+                                            @endif
+                                            @if (Auth()->User()->roles_id == 2)
+                                                <td>
+                                                    <a href="{{ route('viewPengumuman', ['token' => encrypt($key->id), 'kelasMapelId' => encrypt($key['kelas_mapel_id']), 'mapelId' => $mapel['id']]) }}"
+                                                        class="badge bg-info p-2 mb-1 animate-btn-small">
+                                                        <i class="fa-regular fa-eye fa-xl"></i>
+                                                    </a>
+                                                    <a href="{{ route('viewUpdatePengumuman', ['token' => encrypt($key->id), 'mapelId' => $mapel['id']]) }}"
+                                                        class="badge bg-secondary p-2 mb-1 animate-btn-small">
+                                                        <i class="fa-solid fa-pen-to-square fa-xl"></i>
+                                                    </a>
+                                                    <a href="#table" class="badge bg-secondary p-2 animate-btn-small">
+                                                        <i class="fa-solid fa-xl fa-trash" data-bs-toggle="modal"
+                                                            data-bs-target="#modalHapusPengumuman"
+                                                            onclick="changeValuePengumuman({{ $key->id }})"></i>
+                                                    </a>
+                                                </td>
+                                            @else
+                                                <td>
+                                                    <a
+                                                        href="{{ route('viewPengumuman', ['token' => encrypt($key->id), 'kelasMapelId' => encrypt($key['kelas_mapel_id']), 'mapelId' => $mapel['id']]) }}">
+                                                        <button type="button" class="btn btn-primary"><i
+                                                                class="fa-regular fa-eye fa-xl"></i>
+                                                            View</button>
+                                                    </a>
+                                                </td>
+                                            @endif
+                                        </tr>
+                                    @endif
+                                @endforeach
+                            </tbody>
+                        </table>
+                    @else
+                        <div class="text-center">
+                            <img src="{{ url('/asset/img/not-found.png') }}" alt="" class="img-fluid w-50"
+                                style="filter: saturate(0);" srcset="">
+                            <br>
+                            <Strong>Belum ada Pengumuman</Strong>
+                        </div>
+                    @endif
+                </div>
             </div>
         </div>
-        <div class=" col-lg-12 col-md-12">
+        <div class=" col-lg-12 col-md-12 mt-4">
             <h3 class=" fw-bold text-primary"><i class="fa-solid fa-book"></i> Materi
                 @if (Auth()->User()->roles_id == 2)
                     <a
@@ -246,6 +246,108 @@
                             <p>Materi berfungsi sebagai akses materi pembelajaran, referensi untuk
                                 belajar mandiri, pemantauan kemajuan, dan sumber referensi bagi pengguna dalam memahami
                                 materi, persiapan ujian, serta pengayaan pengetahuan.</p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class=" col-lg-12 col-md-12 mt-4">
+            <h3 class=" fw-bold text-primary"><i class="fa-solid fa-comments"></i> Diskusi
+                @if (Auth()->User()->roles_id == 2)
+                    <a
+                        href="{{ route('viewCreateDiskusi', ['token' => encrypt($kelas['id']), 'mapelId' => $mapel['id']]) }}">
+                        <button type="button" class="btn btn-outline-primary">+ Tambah</button>
+
+                    </a>
+                @endif
+            </h3>
+            <div class="p-4 bg-white rounded-3">
+                <div class="row">
+                    {{-- Tabel Diskusi --}}
+                    <div class="table-responsive col-lg-6 col-12 p-3" style="max-height: 300px; overflow-y:auto;">
+                        @if (count($diskusi) > 0)
+                            <table id="table" class="table table-striped table-hover table-lg p-3">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Nama Diskusi</th>
+                                        @if (Auth()->User()->roles_id == 2)
+                                            <th scope="col">Tanggal</th>
+                                        @endif
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    @foreach ($diskusi as $key)
+                                        @if ($key->isHidden != 1 || Auth()->User()->roles_id == 2)
+                                            <tr class=" @if ($key->isHidden == 1) opacity-50 @endif">
+                                                <td>{{ $loop->iteration }}</td>
+                                                <td>
+                                                    {{ $key->name }}
+                                                    @if ($key->isHidden == 1)
+                                                        <i class="fa-solid fa-eye-slash fa-bounce text-danger"></i>
+                                                    @endif
+                                                </td>
+                                                @if (Auth()->User()->roles_id == 2)
+                                                    <td>
+                                                        {{ $key->created_at->format('d F Y H:i') }}
+                                                    </td>
+                                                @endif
+                                                @if (Auth()->User()->roles_id == 2)
+                                                    <td>
+                                                        <a href="{{ route('viewDiskusi', ['token' => encrypt($key->id), 'kelasMapelId' => encrypt($key['kelas_mapel_id']), 'mapelId' => $mapel['id']]) }}"
+                                                            class="badge bg-info p-2 mb-1 animate-btn-small">
+                                                            <i class="fa-regular fa-eye fa-xl"></i>
+                                                        </a>
+                                                        <a href="{{ route('viewUpdateDiskusi', ['token' => encrypt($key->id), 'mapelId' => $mapel['id']]) }}"
+                                                            class="badge bg-secondary p-2 mb-1 animate-btn-small">
+                                                            <i class="fa-solid fa-pen-to-square fa-xl"></i>
+                                                        </a>
+                                                        <a href="#table"
+                                                            class="badge bg-secondary p-2 animate-btn-small">
+                                                            <i class="fa-solid fa-xl fa-trash" data-bs-toggle="modal"
+                                                                data-bs-target="#modalHapusDiskusi"
+                                                                onclick="changeValueDiskusi({{ $key->id }})"></i>
+                                                        </a>
+                                                    </td>
+                                                @else
+                                                    <td>
+                                                        <a
+                                                            href="{{ route('viewDiskusi', ['token' => encrypt($key->id), 'kelasMapelId' => encrypt($key['kelas_mapel_id']), 'mapelId' => $mapel['id']]) }}">
+                                                            <button type="button" class="btn btn-primary"><i
+                                                                    class="fa-regular fa-eye fa-xl"></i>
+                                                                View</button>
+                                                        </a>
+                                                    </td>
+                                                @endif
+                                            </tr>
+                                        @endif
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        @else
+                            <div class="text-center">
+                                <img src="{{ url('/asset/img/not-found.png') }}" alt="" class="img-fluid w-50"
+                                    style="filter: saturate(0);" srcset="">
+                                <br>
+                                <Strong>Belum ada Diskusi</Strong>
+                            </div>
+                        @endif
+                    </div>
+
+                    {{-- Tabel Kanan --}}
+                    <div class="  p-4 col-lg-6 col-12">
+                        <div class="border border-primary rounded-2  h-100 p-3">
+                            <h6 class="text-primary fw-bold text-center">Rekomendasi</h6>
+
+                            <p>Diskusi berfungsi sebagai platform interaksi antara pengguna untuk berbagi pengetahuan,
+                                pengalaman, dan pandangan. Melalui diskusi, peserta dapat saling bertukar ide, memecahkan
+                                masalah bersama, dan memperdalam pemahaman tentang materi. Diskusi juga membantu dalam
+                                mengembangkan kemampuan berpikir kritis dan komunikasi, serta membangun komunitas
+                                pembelajaran yang saling mendukung.</p>
                         </div>
 
                     </div>
@@ -370,9 +472,8 @@
             </div>
         </div>
 
-
-        <div class=" col-lg-12 col-md-12">
-            <h3 class=" fw-bold text-primary"><i class="fa-solid fa-book"></i> Rekomendasi
+        <div class=" col-lg-12 col-md-12 mt-4">
+            <h3 class=" fw-bold text-primary"><i class="fa-solid fa-bookmark"></i> Rekomendasi
                 @if (Auth()->User()->roles_id == 2)
                     <a
                         href="{{ route('viewCreateRekomendasi', ['token' => encrypt($kelas['id']), 'mapelId' => $mapel['id']]) }}">
@@ -461,9 +562,7 @@
                         <div class="border border-primary rounded-2  h-100 p-3">
                             <h6 class="text-primary fw-bold text-center">Rekomendasi</h6>
 
-                            <p>Rekomendasi berfungsi sebagai akses materi pembelajaran, referensi untuk
-                                belajar mandiri, pemantauan kemajuan, dan sumber referensi bagi pengguna dalam memahami
-                                materi, persiapan ujian, serta pengayaan pengetahuan.</p>
+                            <p>Rekomendasi memberikan saran dan panduan yang relevan bagi pengguna berdasarkan kebutuhan dan minat mereka. Dengan rekomendasi yang dipersonalisasi, pengguna dapat menemukan materi pembelajaran yang sesuai, buku referensi, alat bantu, atau strategi belajar yang efektif. Rekomendasi bertujuan untuk membantu pengguna memaksimalkan potensi mereka dalam belajar dan mencapai hasil yang optimal.</p>
                         </div>
 
                     </div>

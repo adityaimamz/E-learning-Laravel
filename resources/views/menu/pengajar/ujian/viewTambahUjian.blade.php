@@ -434,8 +434,10 @@
                 tinymce.init({
                     selector: ".tinymce",
                     plugins: "image link lists media",
-                    toolbar: "undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | align lineheight | tinycomments | checklist numlist bullist indent outdent | emoticons charmap | removeformat",
+                    toolbar: "undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | align lineheight | tinycomments | checklist numlist bullist indent outdent | emoticons charmap | removeformat | image",
                     menubar: false,
+                    images_file_types: 'jpg,svg,webp',
+                    file_picker_types: 'file image media',
                     paste_data_images: false,
                     statusbar: false,
 

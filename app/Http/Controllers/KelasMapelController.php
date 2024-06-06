@@ -10,6 +10,7 @@ use App\Models\Mapel;
 use App\Models\Materi;
 use App\Models\Rekomendasi;
 use App\Models\Pengumuman;
+use App\Models\Diskusi;
 use App\Models\Tugas;
 use App\Models\Ujian;
 use App\Models\User;
@@ -35,6 +36,7 @@ class KelasMapelController extends Controller
             $materi = Materi::where('kelas_mapel_id', $kelasMapel['id'])->get();
             $rekomendasi = Rekomendasi::where('kelas_mapel_id', $kelasMapel['id'])->get();
             $pengumuman = Pengumuman::where('kelas_mapel_id', $kelasMapel['id'])->get();
+            $diskusi = Diskusi::where('kelas_mapel_id', $kelasMapel['id'])->get();
             $tugas = Tugas::where('kelas_mapel_id', $kelasMapel['id'])->get();
             $ujian = Ujian::where('kelas_mapel_id', $kelasMapel['id'])->get();
             $roles = DashboardController::getRolesName();
@@ -50,7 +52,7 @@ class KelasMapelController extends Controller
                 ];
             }
 
-            return view('menu.kelasMapel.viewKelasMapel', ['editor' => $editor, 'assignedKelas' => $assignedKelas, 'pengumuman' => $pengumuman, 'roles' => $roles, 'title' => 'Dashboard', 'kelasMapel' => $kelasMapel, 'ujian' => $ujian, 'materi' => $materi, 'mapel' => $mapel, 'kelas' => $kelas, 'tugas' => $tugas, 'rekomendasi' => $rekomendasi]);
+            return view('menu.kelasMapel.viewKelasMapel', ['editor' => $editor, 'assignedKelas' => $assignedKelas, 'diskusi' => $diskusi, 'pengumuman' => $pengumuman, 'roles' => $roles, 'title' => 'Dashboard', 'kelasMapel' => $kelasMapel, 'ujian' => $ujian, 'materi' => $materi, 'mapel' => $mapel, 'kelas' => $kelas, 'tugas' => $tugas, 'rekomendasi' => $rekomendasi]);
         } else {
             abort(404);
         }
