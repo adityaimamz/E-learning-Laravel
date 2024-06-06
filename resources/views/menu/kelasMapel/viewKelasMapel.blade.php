@@ -341,7 +341,7 @@
                     {{-- Tabel Kanan --}}
                     <div class="  p-4 col-lg-6 col-12">
                         <div class="border border-primary rounded-2  h-100 p-3">
-                            <h6 class="text-primary fw-bold text-center">Rekomendasi</h6>
+                            <h6 class="text-primary fw-bold text-center">Diskusi</h6>
 
                             <p>Diskusi berfungsi sebagai platform interaksi antara pengguna untuk berbagi pengetahuan,
                                 pengalaman, dan pandangan. Melalui diskusi, peserta dapat saling bertukar ide, memecahkan
@@ -562,7 +562,11 @@
                         <div class="border border-primary rounded-2  h-100 p-3">
                             <h6 class="text-primary fw-bold text-center">Rekomendasi</h6>
 
-                            <p>Rekomendasi memberikan saran dan panduan yang relevan bagi pengguna berdasarkan kebutuhan dan minat mereka. Dengan rekomendasi yang dipersonalisasi, pengguna dapat menemukan materi pembelajaran yang sesuai, buku referensi, alat bantu, atau strategi belajar yang efektif. Rekomendasi bertujuan untuk membantu pengguna memaksimalkan potensi mereka dalam belajar dan mencapai hasil yang optimal.</p>
+                            <p>Rekomendasi memberikan saran dan panduan yang relevan bagi pengguna berdasarkan kebutuhan dan
+                                minat mereka. Dengan rekomendasi yang dipersonalisasi, pengguna dapat menemukan materi
+                                pembelajaran yang sesuai, buku referensi, alat bantu, atau strategi belajar yang efektif.
+                                Rekomendasi bertujuan untuk membantu pengguna memaksimalkan potensi mereka dalam belajar dan
+                                mencapai hasil yang optimal.</p>
                         </div>
 
                     </div>
@@ -707,6 +711,29 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="modalHapusDiskusi" tabindex="-1" aria-labelledby="modalHapusDiskusiLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalHapusDiskusiLabel">Konfirmasi Hapus</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Apakah Anda yakin ingin menghapus diskusi ini?
+                </div>
+                <div class="modal-footer">
+                    <form action="{{ route('destroyDiskusi') }}" method="post">
+                        @csrf
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                        <input type="hidden" name="hapusId" id="diskusiId" value="">
+                        <input type="hidden" name="kelasMapelId" id="kelasMapelDiskusi" value="">
+                        <button type="submit" class="btn btn-danger">Hapus</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="modal fade" id="modalHapusPengumuman" tabindex="-1" aria-labelledby="modalHapusPengumumanLabel"
         aria-hidden="true">
         <div class="modal-dialog">
@@ -814,6 +841,14 @@
             const kelasMapelMateri = document.getElementById('kelasMapelMateri');
             materiId.setAttribute('value', itemId);
             kelasMapelMateri.setAttribute('value', "{{ $kelasMapel['id'] }}");
+        }
+
+        function changeValueDiskusi(itemId) {
+            console.log(itemId);
+            const diskusiId = document.getElementById('diskusiId');
+            const kelasMapelDiskusi = document.getElementById('kelasMapelDiskusi');
+            diskusiId.setAttribute('value', itemId);
+            kelasMapelDiskusi.setAttribute('value', "{{ $kelasMapel['id'] }}");
         }
 
         function changeValuePengumuman(itemId) {

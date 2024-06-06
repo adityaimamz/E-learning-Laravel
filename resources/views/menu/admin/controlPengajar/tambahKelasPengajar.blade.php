@@ -78,6 +78,32 @@
                                     @enderror
                                 </div>
 
+                                <div class="mb-3">
+                                    <label for="nuptk" class="form-label">NUPTK :</label>
+                                    <input type="text" class="form-control" id="nuptk" name="nuptk"
+                                        placeholder="NUPTK" value="{{ old('nuptk', $data['nuptk']) }}" readonly
+                                        required>
+                                    @error('nuptk')
+                                        <div class="text-danger small">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="nik" class="form-label">NIK :</label>
+                                    <input type="text" class="form-control" id="nik" name="nik"
+                                        placeholder="NIK" value="{{ old('nik', $data['nik']) }}" readonly
+                                        required>
+                                    @error('nik')
+                                        <div class="text-danger small">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                </div>
+
+
+                                
                                 {{-- Password --}}
                                 <div class="mb-3">
                                     <div class="row">

@@ -7,11 +7,15 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb bg-white">
                 <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                <li class="breadcrumb-item">
-                    <a
-                        href="{{ route('viewKelasMapel', ['mapel' => $mapel['id'], 'token' => encrypt($kelas['id']), 'mapel_id' => $mapel['id']]) }}">
-                        {{ $mapel['name'] }}
-                    </a>
+                    @if (Auth()->user()->roles_id == 1)
+                    @else
+                        <li class="breadcrumb-item">
+                            <a
+                                href="{{ route('viewKelasMapel', ['mapel' => $mapel['id'], 'token' => encrypt($kelas['id']), 'mapel_id' => $mapel['id']]) }}">
+                                {{ $mapel['name'] }}
+                            </a>
+                        </li>
+                    @endif
                 </li>
                 <li class="breadcrumb-item active" aria-current="page"> Ujian</li>
             </ol>
@@ -29,13 +33,20 @@
     {{-- Judul Halaman --}}
     <div class="ps-4 pe-4 mt-4  pt-4">
         <h2 class="display-6 fw-bold">
+            @if (Auth()->user()->roles_id == 1)
+            <a href="{{ route('activity') }}">
+                <button type="button" class="btn btn-outline-secondary rounded-circle">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </button>
+            </a> Ujian
+        @else
             <a
                 href="{{ route('viewKelasMapel', ['mapel' => $mapel['id'], 'token' => encrypt($kelas['id']), 'mapel_id' => $mapel['id']]) }}">
                 <button type="button" class="btn btn-outline-secondary rounded-circle">
                     <i class="fa-solid fa-arrow-left"></i>
                 </button>
-            </a>
-            Ujian
+            </a> Ujian
+        @endif
         </h2>
     </div>
 

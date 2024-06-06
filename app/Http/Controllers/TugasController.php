@@ -49,6 +49,33 @@ class TugasController extends Controller
 
         return view('menu.pengajar.tugas.viewTugas', ['userTugas' => $userTugas, 'assignedKelas' => $assignedKelas, 'editor' => $editorData, 'tugas' => $tugas, 'kelas' => $kelas, 'title' => $tugas->name, 'roles' => $roles, 'tugasAll' => $tugasAll, 'mapel' => $mapel, 'kelasMapel' => $kelasMapel]);
     }
+    public function viewTugasAdmin(Request $request)
+    {
+        // Tugas id
+        $id = decrypt($request->token);
+        //kelasMapel id
+        $idx = decrypt($request->kelasMapelId);
+
+        $tugas = Tugas::where('id', $id)->first();
+
+        $roles = DashboardController::getRolesName();
+        $kelasMapel = KelasMapel::where('id', $tugas->kelas_mapel_id)->first();
+
+        // Dapatkan Pengajar
+        $editorAccess = EditorAccess::where('kelas_mapel_id', $kelasMapel['id'])->first();
+        $editorData = User::where('id', $editorAccess['user_id'])->where('roles_id', 2)->first();
+
+        $mapel = Mapel::where('id', $request->mapelId)->first();
+        $kelas = Kelas::where('id', $kelasMapel['kelas_id'])->first();
+
+        $tugasAll = Tugas::where('kelas_mapel_id', $idx)->get();
+
+        $userTugas = UserTugas::where('tugas_id', $tugas['id'])->where('user_id', Auth()->User()->id)->first();
+
+        $assignedKelas = DashboardController::getAssignedClass();
+
+        return view('menu.pengajar.tugas.viewTugasAdmin', ['userTugas' => $userTugas, 'assignedKelas' => $assignedKelas, 'editor' => $editorData, 'tugas' => $tugas, 'kelas' => $kelas, 'title' => $tugas->name, 'roles' => $roles, 'tugasAll' => $tugasAll, 'mapel' => $mapel, 'kelasMapel' => $kelasMapel]);
+    }
 
     /**
      * Menampilkan halaman Tugas.

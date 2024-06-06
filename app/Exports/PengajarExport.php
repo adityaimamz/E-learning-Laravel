@@ -16,12 +16,13 @@ class PengajarExport implements FromCollection, WithHeadings, WithStyles
      */
     public function collection()
     {
-        $users = User::where('roles_id', 2)->get(['id', 'name', 'gender', 'email']);
+        $users = User::where('roles_id', 2)->get(['id', 'name', 'email']);
 
         // Menambahkan data kontak untuk setiap pengguna
         $users->map(function ($user) {
             $user->nomor_telepon = $user->contact->no_telp; // Sesuaikan dengan atribut yang sesuai
-
+            $user->nik = $user->contact->nik;
+            $user->nuptk = $user->contact->nuptk;
             return $user;
         });
 
@@ -33,9 +34,10 @@ class PengajarExport implements FromCollection, WithHeadings, WithStyles
         return [
             'Id',
             'Nama',
-            'Gender',
             'Email',
-            'Kontak',
+            'Nomor Telepon',
+            'Nuptk',
+            'Nik',
             // Tambahkan judul kolom sesuai dengan kebutuhan
         ];
     }
@@ -43,7 +45,7 @@ class PengajarExport implements FromCollection, WithHeadings, WithStyles
     public function styles(Worksheet $sheet)
     {
         return [
-            'A1:E1' => [
+            'A1:F1' => [
                 // Gaya untuk sel heading baris pertama (A1 sampai C1)
                 'font' => [
                     'bold' => true, // Membuat teks tebal

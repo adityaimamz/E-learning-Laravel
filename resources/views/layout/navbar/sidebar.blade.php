@@ -74,6 +74,11 @@
              <a class="nav-link" href="{{ route('viewSiswa') }}"><i class="fa-solid fa-users"></i>
                  <span>Data Siswa</span></a>
          </li>
+         <li class="nav-item {{ Request::is('/activity') ? 'active' : '' }} animate-btn">
+            <a class="nav-link" href="{{ route('activity') }}">
+                <i class="fas fa-fw fa-tasks"></i>
+                <span>Activity</span></a>
+        </li>
 
          <!-- Divider -->
          <hr class="sidebar-divider">

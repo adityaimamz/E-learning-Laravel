@@ -78,10 +78,11 @@ class PengajarController extends Controller
             'email' => $request->email,
             'password' => $request->password,
         ];
-
+        
         session(['data' => $data]);
-
+        
         return redirect(route('tambahKelasPengajar'));
+        
     }
 
     /**
@@ -113,6 +114,8 @@ class PengajarController extends Controller
         // Mengambil data dari request
         $data = $request->all();
 
+        // dd($data);
+
         // Data pengajar (nama, jenis kelamin, email, password)
         $nama = $data['nama'];
         $email = $data['email'];
@@ -129,7 +132,7 @@ class PengajarController extends Controller
         $userId = User::latest()->first();
         $userId = $userId['id'];
 
-        if ($request->noTelp) {
+        if ($request->noTelp || $request->nuptk || $request->nik) {
             Contact::create([
                 'user_id' => $userId,
                 'no_telp' => $request->noTelp,
@@ -172,6 +175,7 @@ class PengajarController extends Controller
             'action' => 'Tambah',
             'id' => $userId,
         ];
+        
 
         session(['data' => $data]);
 

@@ -58,6 +58,49 @@ class KelasMapelController extends Controller
         }
     }
 
+    public function viewAllActivities()
+    {
+        // Ambil semua materi dan pengumuman
+        $materi = Materi::all();
+        $pengumuman = Pengumuman::all();
+        $rekomendasi = Rekomendasi::all();
+        $diskusi = Diskusi::all();
+        $tugas = Tugas::all();
+        $ujian = Ujian::all();
+        $roles = DashboardController::getRolesName();
+        
+        // Ambil semua kelasMapel
+        $kelasMapel = KelasMapel::all();
+        
+        // Array untuk menyimpan data editor
+        $editors = [];
+    
+        foreach ($kelasMapel as $km) {
+            if (count($km->EditorAccess) > 0) {
+                $editor = User::where('id', $km->EditorAccess[0]->user_id)->first();
+                $editors[$km->id] = [
+                    'name' => $editor->name,
+                    'id' => $editor->id,
+                ];
+            } else {
+                $editors[$km->id] = null;
+            }
+        }
+    
+        return view('menu.admin.activity', [
+            'materi' => $materi,
+            'pengumuman' => $pengumuman,
+            'rekomendasi' => $rekomendasi,
+            'diskusi' => $diskusi,
+            'tugas' => $tugas,
+            'ujian' => $ujian,
+            'title' => 'Activity',
+            'roles' => $roles,
+            'editors' => $editors
+        ]);
+    }
+    
+
     /**
      * Metode untuk menyimpan gambar sementara.
      *

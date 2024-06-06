@@ -81,6 +81,7 @@ Route::controller(KelasMapelController::class)->group(function () {
     // Get
     Route::get('/kelas-mapel/{mapel}/{token}', 'viewKelasMapel')->middleware('auth')->name('viewKelasMapel');
     Route::get('/save-image-temp', 'saveImageTemp')->middleware('auth')->name('saveImageTemp');
+    Route::get('/activity', 'viewAllActivities')->middleware('admin')->name('activity');
 
     Route::get('/export-nilai-tugas', 'exportNilaiTugas')->middleware('pengajar')->name('exportNilaiTugas');
     Route::get('/export-nilai-ujian', 'exportNilaiUjian')->middleware('pengajar')->name('exportNilaiUjian');
@@ -176,6 +177,7 @@ Route::controller(TugasController::class)->group(function () {
     // Get
     Route::get('/tugas/add/{token}', 'viewCreateTugas')->middleware('pengajar')->name('viewCreateTugas');
     Route::get('/tugas', 'viewTugas')->middleware('auth')->name('viewTugas');
+    Route::get('/tugasAdmin', 'viewTugasAdmin')->middleware('admin')->name('viewTugasAdmin');
     Route::get('/tugas/update/{token}', 'viewUpdateTugas')->middleware('pengajar')->name('viewUpdateTugas');
 
     Route::post('/tugas/update-nilai/{token}', 'siswaUpdateNilai')->middleware('pengajar')->name('siswaUpdateNilai');
