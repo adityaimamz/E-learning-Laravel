@@ -36,7 +36,7 @@
     <div class="">
         <div class="ps-4 pe-4">
             <div class="row">
-                <div class="col-12 col-lg-6">
+                <div class="col-12 col-lg-12">
                     <div class="p-4">
                         <h4 class="fw-bold text-primary"><i class="fa-solid fa-pen"></i> Data Pengajar</h4>
                         <form action="{{ route('validateDataPengajar') }}" method="POST">
@@ -147,10 +147,6 @@
                             </div>
                         </form>
                     </div>
-                </div>
-
-                <div class="col-6 text-center d-none d-lg-block">
-                    <img src="{{ url('/asset/img/teacher.png') }}" class="img-fluid w-100" alt="">
                 </div>
             </div>
         </div>

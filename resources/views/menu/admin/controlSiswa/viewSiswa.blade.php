@@ -30,7 +30,7 @@
 
     <div class="">
         <div class="row p-4">
-            <div class="col-12 col-lg-7 bg-white rounded-2">
+            <div class="col-12 col-lg-12 bg-white rounded-2">
                 <div class="mt-4">
                     <div class=" p-4">
                         @if (session()->has('delete-success'))
@@ -165,10 +165,6 @@
 
                     </div>
                 </div>
-            </div>
-
-            <div class="col-5 text-center d-none d-lg-block">
-                <img src="{{ url('/asset/img/work.png') }}" class="img-fluid w-100" alt="">
             </div>
         </div>
     </div>

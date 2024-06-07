@@ -1,25 +1,24 @@
 <?php
 
 use App\Http\Controllers\AdminRegisterController;
+use App\Http\Controllers\Controller;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DataSiswaController;
+use App\Http\Controllers\DiskusiController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\KelasMapelController;
 use App\Http\Controllers\LoginRegistController;
 use App\Http\Controllers\MapelController;
 use App\Http\Controllers\MateriController;
-use App\Http\Controllers\PengumumanController;
-use App\Http\Controllers\RekomendasiController;
-use App\Http\Controllers\DiskusiController;
-use App\Http\Controllers\Controller;
 use App\Http\Controllers\PengajarController;
+use App\Http\Controllers\PengumumanController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RekomendasiController;
+use App\Http\Controllers\SurveyController;
 use App\Http\Controllers\TugasController;
 use App\Http\Controllers\UjianController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\SurveyController;
-
 
 /*
 |--------------------------------------------------------------------------
@@ -30,14 +29,11 @@ use App\Http\Controllers\SurveyController;
 | routes are loaded by the RouteServiceProvider and all of them will
 | be assigned to the "web" middleware group. Make something great!
 |
-*/
+ */
 
 Route::get('/', function () {
     return redirect('/dashboard');
 });
-
-
-
 
 Route::get('/room-chat', function () {
     $roles = \App\Http\Controllers\DashboardController::getRolesName();
@@ -50,7 +46,7 @@ Route::get('/room-chat', function () {
         'title' => 'Chat',
         'roles' => $roles,
         'assignedKelas' => $assignedKelas,
-        'kelas' => $kelas
+        'kelas' => $kelas,
     ]);
 })->middleware('auth')->name('room-chat');
 
@@ -292,12 +288,19 @@ Route::controller(SurveyController::class)->group(function () {
     Route::get('/data-survey/{survey:id}', 'viewListSurvey')->middleware('admin')->name('viewListSurvey');
     Route::get('/data-survey/detail/{survey:id}/{user:id}', [SurveyController::class, 'viewDetailSurvey'])->name('viewDetailSurvey');
 
+    Route::get('/tambah-survey-question', 'viewTambahSurveyQuestion')->name('viewTambahSurveyQuestion');
+    Route::post('/tambah-survey-question', 'tambahSurveyQuestion')->name('tambahSurveyQuestion');
+    Route::get('/survey-questions', 'viewSurveyQuestions')->name('viewSurveyQuestions');
+    Route::get('/survey-questions/update-survey-question/{question:id}', 'viewUpdateSurveyQuestion')->middleware('admin')->name('viewUpdateSurveyQuestion');
+    Route::post('/update-survey-question', 'updateSurveyQuestion')->middleware('admin')->name('updateSurveyQuestion');
+    Route::post('/destroy-survey-question', 'destroySurveyQuestion')->middleware('admin')->name('destroySurveyQuestion');
+
+
     // Student routes
     Route::get('/survey', 'viewSurveyMurid')->middleware('auth')->name('viewSurveyMurid');
     Route::get('/survey-start', 'viewSurveyStart')->middleware('auth')->name('viewSurveyStart');
     Route::post('/survey', 'submitSurveyMurid')->middleware('auth')->name('submitSurveyMurid');
 });
-
 
 // DataSiswa
 Route::controller(DataSiswaController::class)->group(function () {

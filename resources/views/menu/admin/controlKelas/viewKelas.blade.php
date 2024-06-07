@@ -42,7 +42,7 @@
 
 
     <div class="row p-4">
-        <div class="col-12 col-lg-6 bg-white rounded-2">
+        <div class="col-12 col-lg-12 bg-white rounded-2">
             <div class="mt-4">
                 <div class=" p-4">
                     @if (session()->has('delete-success'))
@@ -154,9 +154,6 @@
             </div>
         </div>
         <!-- Gambar di sisi kanan (hanya ditampilkan di perangkat desktop) -->
-        <div class="col-6 text-center d-none d-lg-block">
-            <img src="{{ url('/asset/img/office.png') }}" class="img-fluid w-100" alt="">
-        </div>
     </div>
 
 

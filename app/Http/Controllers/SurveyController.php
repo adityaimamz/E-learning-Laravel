@@ -192,4 +192,72 @@ class SurveyController extends Controller
         return redirect()->route('viewSurvey')->with('delete-success', 'Survey berhasil dihapus!');
     }
 
+    // Menampilkan halaman tambah pertanyaan survei untuk admin
+    public function viewTambahSurveyQuestion()
+    {
+        $roles = DashboardController::getRolesName();
+        return view('menu.admin.controlSurvey.viewTambahSurveyQuestion', ['title' => 'Tambah Pertanyaan Survey', 'roles' => $roles]);
+    }
+
+// Menyimpan pertanyaan survei baru
+    public function tambahSurveyQuestion(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'question' => 'required|string|max:255',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        SurveyQuestion::create([
+            'question' => $request->question,
+        ]);
+
+        return redirect()->route('viewSurveyQuestions')->with('success', 'Pertanyaan Survey berhasil ditambahkan!');
+    }
+
+// Menampilkan halaman daftar pertanyaan survei untuk admin
+    public function viewSurveyQuestions()
+    {
+        $roles = DashboardController::getRolesName();
+        $questions = SurveyQuestion::paginate(15);
+        return view('menu.admin.controlSurvey.viewSurveyQuestions', ['title' => 'Data Pertanyaan Survey', 'questions' => $questions, 'roles' => $roles]);
+    }
+
+    public function destroySurveyQuestion(Request $request)
+    {
+        $questionId = $request->input('idHapus');
+        $question = SurveyQuestion::findOrFail($questionId);
+
+        // Hapus pertanyaan
+        $question->delete();
+
+        return redirect()->route('viewSurveyQuestions')->with('delete-success', 'Pertanyaan berhasil dihapus!');
+    }
+
+    public function viewUpdateSurveyQuestion($id)
+    {
+        $roles = DashboardController::getRolesName();
+        $question = SurveyQuestion::findOrFail($id);
+        return view('menu.admin.controlSurvey.viewUpdateSurveyQuestion', ['title' => 'Update Pertanyaan Survey', 'question' => $question, 'roles' => $roles]);
+    }
+    public function updateSurveyQuestion(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'question' => 'required|string|max:255',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $question = SurveyQuestion::findOrFail($request->id);
+        $question->update([
+            'question' => $request->question,
+        ]);
+
+        return redirect()->route('viewSurveyQuestions')->with('success', 'Pertanyaan berhasil diperbarui!');
+    }
+
 }

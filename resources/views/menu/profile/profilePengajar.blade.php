@@ -4,7 +4,6 @@
     <link rel="stylesheet" href="{{ url('/asset/css/card-img-full.css') }}">
 
     <div class="row">
-
         @if (Auth()->user()->roles_id == 1)
             @include('menu.admin.adminHelper')
         @endif
@@ -20,7 +19,7 @@
         {{-- Header --}}
         <div class="ps-4 pe-4 mt-4">
             <h1 class="display-6 fw-bold">
-                <a href="  @if (Auth()->user()->roles_id == 1) {{ route('viewPengajar') }}@else # @endif"
+                <a href="@if (Auth()->user()->roles_id == 1) {{ route('viewPengajar') }} @else # @endif"
                     @if (Auth()->user()->roles_id != 1) onclick="window.history.back()" @endif><button type="button"
                         class="btn btn-outline-secondary rounded-circle">
                         <i class="fa-solid fa-arrow-left"></i></button></a>
@@ -65,24 +64,22 @@
                     {{-- No Telp --}}
                     <div class="text-center mt-2">
                         <i class="fa-solid fa-phone"></i>
-                        @if ($user->contact->no_telp != null)
+                        @if ($user->contact && $user->contact->no_telp != null)
                             {{ $user->contact->no_telp }}
                         @else
                             <span class="small">(belum ditambahkan)</span>
                         @endif
                     </div>
-
                 </div>
             </div>
 
             <div class="mt-4 text-center">
                 <div class="mb-2">
-                    @if ($user->contact->no_telp != null)
+                    @if ($user->contact && $user->contact->no_telp != null)
                         <a href="{{ 'https://wa.me/62' . ltrim($user->contact->no_telp, '0') }}">
                             <button type="button" class="btn btn-md w-100 btn-success animate-btn-small"><i
                                     class="fa-solid fa-phone"></i>
-                                Chat
-                                Whatsapp
+                                Chat Whatsapp
                             </button>
                         </a>
                     @endif
@@ -121,14 +118,10 @@
                         </a>
                     </div>
                 @endif
-
-
             </div>
         </div>
 
-
-        <div class="col-sm-7 col-md-7 col-lg col-12 p-4 ">
-
+        <div class="col-sm-7 col-md-7 col-lg col-12 p-4">
             <div class="mb-4 bg-white p-4 rounded-2">
                 <div id="Topic">
                     <h4 class="fw-bold">Tentang Saya :</h4>
@@ -172,7 +165,6 @@
                     </div>
                 </div>
 
-
                 <div class="row d-none d-sm-block">
                     {{-- Blade disini --}}
                     {{-- {{ dd($mapelKelas) }} --}}
@@ -214,10 +206,7 @@
                     @endforeach
                     {{-- End Blade --}}
                 </div>
-
-
             </div>
-
         </div>
     </div>
 
@@ -230,13 +219,10 @@
                 </div>
                 <div class="modal-body">
                     <div class="mb-1 ps-4 pe-4">
-                        <img src="{{ url('/asset/img/panorama.png') }}" class="w-100 rounded-2 img-fluid"
-                            alt="">
+                        <img src="{{ url('/asset/img/panorama.png') }}" class="w-100 rounded-2 img-fluid" alt="">
                     </div>
 
-                    <div id="modalContent">
-
-                    </div>
+                    <div id="modalContent"></div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
@@ -247,10 +233,10 @@
 
     <script>
         const loading = `<div id="loadingIndicator2">
-                      <div class="spinner-border text-info" role="status">
-  <span class="visually-hidden">Loading...</span>
-</div>
-                    </div>`;
+                            <div class="spinner-border text-info" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>`;
 
         const modalContent = document.getElementById('modalContent');
 

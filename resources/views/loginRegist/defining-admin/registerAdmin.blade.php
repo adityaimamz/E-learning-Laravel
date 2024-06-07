@@ -26,7 +26,7 @@
                     <img src="asset/img/illustration-1.jpg" width="400px" class=" img-fluid" alt="">
                 </div>
                 <div class="col-12 mt-4">
-                <img src="asset/img/LMS-SMP.png" width="400px" class="img-fluid" alt="">
+                <img src="asset/img/LMS_SMP.png" width="400px" class="img-fluid" alt="">
                 </div>
                 <div class="card px-1 py-4 mt-4">
                     <div class="card-body">

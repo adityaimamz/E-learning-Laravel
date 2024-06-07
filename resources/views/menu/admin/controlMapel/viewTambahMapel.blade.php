@@ -30,7 +30,7 @@
     <div class="">
         <div class="row p-4  ">
             <h4 class="fw-bold text-primary"><i class="fa-solid fa-pen"></i> Data Mapel</h4>
-            <div class="col-12 col-lg-6 bg-white rounded-2">
+            <div class="col-12 col-lg-12 bg-white rounded-2">
                 <div class="mt-4">
                     <div class=" p-4">
                         <form action="{{ route('validateNamaMapel') }}" method="POST">
@@ -58,10 +58,6 @@
                         </form>
                     </div>
                 </div>
-            </div>
-
-            <div class="col-6 text-center d-none d-lg-block">
-                <img src="{{ url('/asset/img/exam.png') }}" class="img-fluid h-100" alt="">
             </div>
         </div>
     </div>

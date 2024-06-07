@@ -11,7 +11,7 @@
 
             {{-- Logo CBT --}}
             <div class="col-12 mt-4">
-                <img src="asset/img/LMS-SMP.png" width="400px" class="img-fluid" alt="">
+                <img src="asset/img/LMS_SMP.png" width="400px" class="img-fluid" alt="">
             </div>
 
             {{-- Kartu Registrasi --}}

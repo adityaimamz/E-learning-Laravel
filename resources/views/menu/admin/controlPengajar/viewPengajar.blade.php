@@ -28,7 +28,7 @@
     </div>
 
     <div class="row p-4">
-        <div class="col-12 col-lg-7 bg-white rounded-2">
+        <div class="col-12 col-lg-12 bg-white rounded-2">
             <div class="mt-4">
                 <div class=" p-4">
                     @if (session()->has('delete-success'))
@@ -89,8 +89,8 @@
                                             <th scope="col">#</th>
                                             <th scope="col">-</th>
                                             <th scope="col">Nama</th>
-                                            <th scope="col">Nuptk</th>
-                                            <th scope="col">Nik</th>
+                                            <th scope="col">NUPTK</th>
+                                            <th scope="col">NIK</th>
                                             <th scope="col">Mengajar</th>
                                             <th scope="col">Email</th>
                                             <th scope="col">No Telp</th>
@@ -156,10 +156,6 @@
 
                 </div>
             </div>
-        </div>
-
-        <div class="col-5 text-center d-none d-lg-block">
-            <img src="{{ url('/asset/img/teacher.png') }}" class="img-fluid " alt="">
         </div>
     </div>
 

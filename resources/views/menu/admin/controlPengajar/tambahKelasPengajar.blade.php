@@ -30,7 +30,7 @@
 
     <div class="">
         <div class="row ps-4 pe-4">
-            <div class="col-12 col-lg-6">
+            <div class="col-12 col-lg-12">
                 <div class="">
                     <div class=" p-4">
                         <form action="{{ route('validateDataPengajarKelas') }}" method="POST">
@@ -129,10 +129,6 @@
                             </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="col-lg-6 text-center d-none d-lg-block">
-                <img src="{{ url('/asset/img/teacher.png') }}" class="img-fluid" alt="">
             </div>
         </div>
 

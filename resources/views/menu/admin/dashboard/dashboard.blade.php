@@ -1,8 +1,8 @@
 @extends('layout.template.mainTemplate')
 
 @section('container')
-    <h1>Dashboard</h1>
-    <span class="small">Pemantauan Data</span>
+    <h1 class="text-dark">Dashboard</h1>
+    <span class="small text-dark">Pemantauan Data</span>
     <hr>
 
 
@@ -264,7 +264,6 @@
             }
         });
     </script>
-    // Chart Tugas
     <script>
         var ctxTugas = document.getElementById('tugasChart').getContext('2d');
 
@@ -315,7 +314,6 @@
             }
         });
     </script>
-    // Chart ujian
     <script>
         var ctxUjian = document.getElementById('ujianChart').getContext('2d');
 

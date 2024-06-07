@@ -10,7 +10,7 @@
     <div class="col-12 ps-4 pe-4 mb-4">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb bg-white">
-                <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+                <li class="breadcrumb-item active text-dark" aria-current="page">Dashboard</li>
             </ol>
         </nav>
     </div>
@@ -18,7 +18,7 @@
     {{-- Judul Halaman --}}
     <div class="ps-4 pe-4">
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h1 class="display-6 fw-bold ">Dashboard</h1>
+            <h1 class="display-6 fw-bold text-dark">Dashboard</h1>
         </div>
     </div>
 

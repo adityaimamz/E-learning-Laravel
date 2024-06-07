@@ -34,7 +34,7 @@
     <div class="">
         <div class="row p-4">
             <h4 class="fw-bold text-primary"><i class="fa-solid fa-pen"></i> Data Kelas</h4>
-            <div class="col-12 col-lg-6 bg-white rounded-2">
+            <div class="col-12 col-lg-12 bg-white rounded-2">
                 <form action="{{ route('validateNamaKelas') }}" method="POST">
                     @csrf
                     <div class="mt-4">
@@ -94,10 +94,6 @@
                         </div>
                     </div>
                 </form>
-            </div>
-
-            <div class="col-6 text-center d-none d-lg-block">
-                <img src="{{ url('/asset/img/office.png') }}" class="img-fluid w-100" alt="">
             </div>
         </div>
     </div>
