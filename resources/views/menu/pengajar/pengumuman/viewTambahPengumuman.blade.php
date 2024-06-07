@@ -86,9 +86,7 @@
     </div>
 
     {{-- Script yang dibutuhkan --}}
-    <script src="https://cdn.tiny.cloud/1/owul23wv0iajhyb6jcltjhj0yufndfa0srzpliww43lp6n5d/tinymce/6/tinymce.min.js"
-        referrerpolicy="origin"></script>;
-
+<script src="https://cdn.tiny.cloud/1/27rm72jiv3he0rix00xvw5nmcz0yd4rko98rj2p8pcrh4wlv/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>;
     <script>
         // Inisialisasi TinyMCE
         tinymce.init({
