@@ -31,4 +31,9 @@ class Kelas extends Model
     {
         return $this->hasMany(KelasMapel::class);
     }
+
+    public function surveys()
+    {
+        return $this->hasMany(Survey::class);
+    }
 }

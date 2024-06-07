@@ -18,6 +18,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TugasController;
 use App\Http\Controllers\UjianController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SurveyController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -33,6 +35,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return redirect('/dashboard');
 });
+
+
+
 
 Route::get('/room-chat', function () {
     $roles = \App\Http\Controllers\DashboardController::getRolesName();
@@ -274,6 +279,25 @@ Route::controller(MapelController::class)->group(function () {
     Route::get('/search-mapel', 'searchMapel')->middleware('admin')->name('searchMapel');
     Route::get('/search-mapel-from-kelas', 'searchKelasMapel')->middleware('admin')->name('searchKelasMapel');
 });
+
+Route::controller(SurveyController::class)->group(function () {
+    // Admin routes
+    Route::get('/data-survey', 'viewSurvey')->middleware('auth')->name('viewSurvey');
+    Route::get('/data-survey/tambah-survey', 'viewTambahSurvey')->middleware('admin')->name('viewTambahSurvey');
+    Route::get('/data-survey/update-survey/{survey:id}', 'viewUpdateSurvey')->middleware('admin')->name('viewUpdateSurvey');
+    Route::post('/data-survey/tambah-survey', 'tambahSurvey')->middleware('admin')->name('tambahSurvey');
+    Route::get('/search-survey', 'searchSurvey')->middleware('admin')->name('searchSurvey');
+    Route::post('/update-survey', 'updateSurvey')->middleware('admin')->name('updateSurvey');
+    Route::post('/destroy-survey', 'destroySurvey')->middleware('admin')->name('destroySurvey');
+    Route::get('/data-survey/{survey:id}', 'viewListSurvey')->middleware('admin')->name('viewListSurvey');
+    Route::get('/data-survey/detail/{survey:id}/{user:id}', [SurveyController::class, 'viewDetailSurvey'])->name('viewDetailSurvey');
+
+    // Student routes
+    Route::get('/survey', 'viewSurveyMurid')->middleware('auth')->name('viewSurveyMurid');
+    Route::get('/survey-start', 'viewSurveyStart')->middleware('auth')->name('viewSurveyStart');
+    Route::post('/survey', 'submitSurveyMurid')->middleware('auth')->name('submitSurveyMurid');
+});
+
 
 // DataSiswa
 Route::controller(DataSiswaController::class)->group(function () {

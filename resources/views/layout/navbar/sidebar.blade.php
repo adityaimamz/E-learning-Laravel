@@ -80,6 +80,11 @@
                 <span>Activity</span></a>
         </li>
 
+        <li class="nav-item {{ Request::is('data-survey*') ? 'active' : '' }} animate-btn">
+            <a class="nav-link" href="{{ route('viewSurvey') }}"> <i class="fa-solid fa-chalkboard-user"></i>
+                <span>Data Survey</span></a>
+        </li>
+
          <!-- Divider -->
          <hr class="sidebar-divider">
      @endif
@@ -122,6 +127,10 @@
          <!-- Konten yang akan ditampilkan jika permintaan tidak sesuai dengan rute 'userUjian' -->
          @if (Auth()->user()->roles_id == 3)
              <!-- Nav Item - Pages Collapse Menu -->
+              <li class="nav-item {{ Request::is('survey*') ? 'active' : '' }} animate-btn">
+            <a class="nav-link" href="{{ route('viewSurveyMurid') }}"> <i class="fa-solid fa-chalkboard-user"></i>
+                <span>Data Survey</span></a>
+        </li>
              @foreach ($assignedKelas as $assignedKelasItem)
                  <!-- Nav Item - Pages Collapse Menu -->
                  <li

@@ -299,6 +299,7 @@
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Nama Ujian</th>
+                                <th scope="col">Pembuat</th>
                                 <th scope="col">Time</th>
                                 <th scope="col">Tipe Soal</th>
                                 <th scope="col">Jumlah Soal</th>
@@ -319,6 +320,11 @@
                                                 <i class="fa-solid fa-eye-slash fa-bounce text-danger"></i>
                                             @endif
                                         </td>
+                                        @if (isset($editors[$key->kelas_mapel_id]) && $editors[$key->kelas_mapel_id] !== null)
+                                            <td> {{ $editors[$key->kelas_mapel_id]['name'] }}</td>
+                                        @else
+                                            <td>Editor: Tidak ada</td>
+                                        @endif
                                         <td>{{ $key->time }} Menit</td>
                                         @if ($key->tipe == 'multiple')
                                             <td><span class="badge p-2 badge-dark">Pilihan Ganda</span></td>
@@ -346,7 +352,7 @@
                                         @if (Auth()->User()->roles_id == 1)
                                             <td>{{ $key->created_at->format('d F Y H:i') }}</td>
                                             <td>
-                                                <a href="{{ route('viewUjian',['token' => encrypt($key->id), 'kelasMapelId' => encrypt($key['kelas_mapel_id']), 'mapelId' => $key->mapel_id]) }}"
+                                                <a href="{{ route('viewUjian', ['token' => encrypt($key->id), 'kelasMapelId' => encrypt($key['kelas_mapel_id']), 'mapelId' => $key->mapel_id]) }}"
                                                     class="badge badge-info p-2 mb-1 animate-btn-small">
                                                     <i class="fa-regular fa-eye fa-xl"></i>
                                                 </a>
