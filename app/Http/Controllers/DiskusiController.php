@@ -2,23 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\EditorAccess;
-use App\Models\Kelas;
-use App\Models\KelasMapel;
-use App\Models\Mapel;
-use App\Models\Diskusi;
-use App\Models\User;
-use Exception;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Livewire\Livewire;
-
+use App\Models\EditorAccess; // Mengimpor model EditorAccess
+use App\Models\Kelas; // Mengimpor model Kelas
+use App\Models\KelasMapel; // Mengimpor model KelasMapel
+use App\Models\Mapel; // Mengimpor model Mapel
+use App\Models\Diskusi; // Mengimpor model Diskusi
+use App\Models\User; // Mengimpor model User
+use Exception; // Mengimpor kelas Exception
+use Illuminate\Http\Request; // Mengimpor Request dari Laravel
+use Illuminate\Support\Facades\DB; // Mengimpor DB dari Laravel
+use Livewire\Livewire; // Mengimpor Livewire
 
 /**
  * Class : DiskusiController
  *
  * Class ini berisi berbagai fungsi yang berkaitan dengan manipulasi data-data diskusi, terutama terkait dengan model.
-
  */
 class DiskusiController extends Controller
 {
@@ -30,24 +28,29 @@ class DiskusiController extends Controller
      */
     public function viewCreateDiskusi($token, Request $request)
     {
-        // id = Kelas Id
-        $id = decrypt($token);
-        $kelasMapel = KelasMapel::where('mapel_id', $request->mapelId)->where('kelas_id', $id)->first();
+        $id = decrypt($token); // Mendekripsi token untuk mendapatkan ID kelas
+        $kelasMapel = KelasMapel::where('mapel_id', $request->mapelId)->where('kelas_id', $id)->first(); // Mencari kelasMapel berdasarkan mapelId dan kelasId
 
-        $preparedIdDiskusi = count(Diskusi::get());
-        $preparedIdDiskusi = $preparedIdDiskusi + 1;
-        // Logika untuk memeriksa apakah pengguna yang sudah login memiliki akses editor
-        foreach (Auth()->User()->EditorAccess as $key) {
-            if ($key->kelas_mapel_id == $kelasMapel['id']) {
-                $roles = DashboardController::getRolesName();
-                $mapel = Mapel::where('id', $request->mapelId)->first();
+        $preparedIdDiskusi = count(Diskusi::get()); // Menghitung jumlah diskusi yang ada
+        $preparedIdDiskusi = $preparedIdDiskusi + 1; // Menambah 1 untuk ID diskusi berikutnya
+        foreach (Auth()->User()->EditorAccess as $key) { // Loop untuk memeriksa akses editor pengguna
+            if ($key->kelas_mapel_id == $kelasMapel['id']) { // Memeriksa apakah pengguna memiliki akses ke kelasMapel
+                $roles = DashboardController::getRolesName(); // Mendapatkan nama peran pengguna
+                $mapel = Mapel::where('id', $request->mapelId)->first(); // Mencari mapel berdasarkan mapelId
 
-                $assignedKelas = DashboardController::getAssignedClass();
+                $assignedKelas = DashboardController::getAssignedClass(); // Mendapatkan kelas yang ditugaskan
 
-                return view('menu.pengajar.diskusi.viewTambahDiskusi', ['assignedKelas' => $assignedKelas, 'title' => 'Tambah Diskusi', 'roles' => $roles, 'kelasId' => $id, 'mapel' => $mapel, 'preparedIdDiskusi' => $preparedIdDiskusi]);
+                return view('menu.pengajar.diskusi.viewTambahDiskusi', [
+                    'assignedKelas' => $assignedKelas,
+                    'title' => 'Tambah Diskusi',
+                    'roles' => $roles,
+                    'kelasId' => $id,
+                    'mapel' => $mapel,
+                    'preparedIdDiskusi' => $preparedIdDiskusi
+                ]); // Menampilkan halaman tambah diskusi dengan data yang dikumpulkan
             }
         }
-        abort(404);
+        abort(404); // Mengembalikan halaman 404 jika pengguna tidak memiliki akses
     }
 
     /**
@@ -58,27 +61,32 @@ class DiskusiController extends Controller
      */
     public function viewUpdateDiskusi($token, Request $request)
     {
-        // token = Diskusi Id
-        $id = decrypt($token);
-        $diskusi = Diskusi::where('id', $id)->first();  // Dapatkan Diskusi
+        $id = decrypt($token); // Mendekripsi token untuk mendapatkan ID diskusi
+        $diskusi = Diskusi::where('id', $id)->first(); // Mencari diskusi berdasarkan ID
 
-        // Dapatkan kelas mapel untuk dibandingkan dengan diskusi
-        $kelasMapel = KelasMapel::where('id', $diskusi->kelas_mapel_id)->first();
+        $kelasMapel = KelasMapel::where('id', $diskusi->kelas_mapel_id)->first(); // Mencari kelasMapel berdasarkan ID kelasMapel dalam diskusi
 
-        // Logika untuk memeriksa apakah pengguna yang sudah login memiliki akses editor
-        foreach (Auth()->User()->EditorAccess as $key) {
-            if ($key->kelas_mapel_id == $kelasMapel['id']) {
-                $roles = DashboardController::getRolesName();
-                $mapel = Mapel::where('id', $request->mapelId)->first();
+        foreach (Auth()->User()->EditorAccess as $key) { // Loop untuk memeriksa akses editor pengguna
+            if ($key->kelas_mapel_id == $kelasMapel['id']) { // Memeriksa apakah pengguna memiliki akses ke kelasMapel
+                $roles = DashboardController::getRolesName(); // Mendapatkan nama peran pengguna
+                $mapel = Mapel::where('id', $request->mapelId)->first(); // Mencari mapel berdasarkan mapelId
 
-                $kelas = Kelas::where('id', $kelasMapel['kelas_id'])->first('id');
+                $kelas = Kelas::where('id', $kelasMapel['kelas_id'])->first('id'); // Mencari kelas berdasarkan kelasId dalam kelasMapel
 
-                $assignedKelas = DashboardController::getAssignedClass();
+                $assignedKelas = DashboardController::getAssignedClass(); // Mendapatkan kelas yang ditugaskan
 
-                return view('menu.pengajar.diskusi.viewUpdateDiskusi', ['assignedKelas' => $assignedKelas, 'title' => 'Update Diskusi', 'diskusi' => $diskusi, 'roles' => $roles, 'kelasId' => $kelas['id'], 'mapel' => $mapel, 'kelasMapel' => $kelasMapel]);
+                return view('menu.pengajar.diskusi.viewUpdateDiskusi', [
+                    'assignedKelas' => $assignedKelas,
+                    'title' => 'Update Diskusi',
+                    'diskusi' => $diskusi,
+                    'roles' => $roles,
+                    'kelasId' => $kelas['id'],
+                    'mapel' => $mapel,
+                    'kelasMapel' => $kelasMapel
+                ]); // Menampilkan halaman update diskusi dengan data yang dikumpulkan
             }
         }
-        abort(404);
+        abort(404); // Mengembalikan halaman 404 jika pengguna tidak memiliki akses
     }
 
     /**
@@ -88,28 +96,36 @@ class DiskusiController extends Controller
      */
     public function viewDiskusi(Request $request)
     {
-        // diskusi id
-        $id = decrypt($request->token);
-        //kelasMapel id
-        $idx = decrypt($request->kelasMapelId);
+        $id = decrypt($request->token); // Mendekripsi token untuk mendapatkan ID diskusi
+        $idx = decrypt($request->kelasMapelId); // Mendekripsi kelasMapelId
 
-        $diskusi = Diskusi::where('id', $id)->first();
+        $diskusi = Diskusi::where('id', $id)->first(); // Mencari diskusi berdasarkan ID
 
-        $roles = DashboardController::getRolesName();
-        $kelasMapel = KelasMapel::where('id', $diskusi->kelas_mapel_id)->first();
+        $roles = DashboardController::getRolesName(); // Mendapatkan nama peran pengguna
+        $kelasMapel = KelasMapel::where('id', $diskusi->kelas_mapel_id)->first(); // Mencari kelasMapel berdasarkan ID kelasMapel dalam diskusi
 
-        // Dapatkan Pengajar
-        $editorAccess = EditorAccess::where('kelas_mapel_id', $kelasMapel['id'])->first();
-        $editorData = User::where('id', $editorAccess['user_id'])->where('roles_id', 2)->first();
+        $editorAccess = EditorAccess::where('kelas_mapel_id', $kelasMapel['id'])->first(); // Mencari akses editor berdasarkan kelasMapelId
+        $editorData = User::where('id', $editorAccess['user_id'])->where('roles_id', 2)->first(); // Mencari data pengguna yang memiliki akses editor
 
-        $mapel = Mapel::where('id', $request->mapelId)->first();
-        $kelas = Kelas::where('id', $kelasMapel['kelas_id'])->first('id');
+        $mapel = Mapel::where('id', $request->mapelId)->first(); // Mencari mapel berdasarkan mapelId
+        $kelas = Kelas::where('id', $kelasMapel['kelas_id'])->first('id'); // Mencari kelas berdasarkan kelasId dalam kelasMapel
 
-        $diskusiAll = Diskusi::where('kelas_mapel_id', $idx)->get();
+        $diskusiAll = Diskusi::where('kelas_mapel_id', $idx)->get(); // Mendapatkan semua diskusi berdasarkan kelasMapelId
 
-        $assignedKelas = DashboardController::getAssignedClass();
+        $assignedKelas = DashboardController::getAssignedClass(); // Mendapatkan kelas yang ditugaskan
 
-        return view('menu.pengajar.diskusi.viewDiskusi', ['assignedKelas' => $assignedKelas, 'editor' => $editorData, 'diskusi' => $diskusi, 'kelas' => $kelas, 'title' => $diskusi->name, 'roles' => $roles, 'diskusiAll' => $diskusiAll, 'mapel' => $mapel, 'kelasMapel' => $kelasMapel, 'diskusiId' => $id]);
+        return view('menu.pengajar.diskusi.viewDiskusi', [
+            'assignedKelas' => $assignedKelas,
+            'editor' => $editorData,
+            'diskusi' => $diskusi,
+            'kelas' => $kelas,
+            'title' => $diskusi->name,
+            'roles' => $roles,
+            'diskusiAll' => $diskusiAll,
+            'mapel' => $mapel,
+            'kelasMapel' => $kelasMapel,
+            'diskusiId' => $id
+        ]); // Menampilkan halaman diskusi dengan data yang dikumpulkan
     }
 
     /**
@@ -119,39 +135,34 @@ class DiskusiController extends Controller
      */
     public function createDiskusi(Request $request)
     {
-        // Lakukan validasi untuk inputan form
         $request->validate([
             'name' => 'required',
             'content' => 'required',
-        ]);
+        ]); // Melakukan validasi untuk inputan form
 
         try {
-            // Dekripsi token dan dapatkan KelasMapel
-            $token = decrypt($request->kelasId);
-            $kelasMapel = KelasMapel::where('mapel_id', $request->mapelId)->where('kelas_id', $token)->first();
+            $token = decrypt($request->kelasId); // Mendekripsi token untuk mendapatkan ID kelas
+            $kelasMapel = KelasMapel::where('mapel_id', $request->mapelId)->where('kelas_id', $token)->first(); // Mencari kelasMapel berdasarkan mapelId dan kelasId
 
-            $isHidden = 1;
+            $isHidden = 1; // Default status diskusi tersembunyi
 
             if ($request->opened) {
-                $isHidden = 0;
+                $isHidden = 0; // Jika diskusi dibuka, ubah status tersembunyi menjadi 0
             }
             $temp = [
                 'kelas_mapel_id' => $kelasMapel['id'],
                 'name' => $request->name,
                 'content' => $request->content,
                 'isHidden' => $isHidden,
-            ];
+            ]; // Menyiapkan data untuk diskusi baru
 
-            // Simpan data Diskusi ke database
-            Diskusi::create($temp);
+            Diskusi::create($temp); // Menyimpan data diskusi ke database
 
-            // Commit transaksi database
-            DB::commit();
+            DB::commit(); // Melakukan commit transaksi database
 
-            // Berikan respons sukses jika semuanya berjalan lancar
-            return response()->json(['message' => 'Diskusi berhasil dibuat'], 200);
+            return response()->json(['message' => 'Diskusi berhasil dibuat'], 200); // Memberikan respons sukses
         } catch (Exception $e) {
-            return response()->json(['message' => 'Error'], 200);
+            return response()->json(['message' => 'Error'], 200); // Memberikan respons error jika terjadi kesalahan
         }
     }
 
@@ -162,35 +173,32 @@ class DiskusiController extends Controller
      */
     public function updateDiskusi(Request $request)
     {
-        // Lakukan validasi untuk inputan form
         $request->validate([
             'name' => 'required',
             'content' => 'required',
-        ]);
-        // return response()->json(['message' => $request->input()], 200);
-        // Dekripsi token hasil dari hidden form lalu dapatkan data KelasMapel
-        $diskusiId = decrypt($request->diskusiId);
+        ]); // Melakukan validasi untuk inputan form
+
+        $diskusiId = decrypt($request->diskusiId); // Mendekripsi token untuk mendapatkan ID diskusi
 
         try {
-            $isHidden = 1;
+            $isHidden = 1; // Default status diskusi tersembunyi
 
             if ($request->opened) {
-                $isHidden = 0;
+                $isHidden = 0; // Jika diskusi dibuka, ubah status tersembunyi menjadi 0
             }
             $data = [
                 'name' => $request->name,
                 'content' => $request->content,
                 'isHidden' => $isHidden,
-            ];
-            // Simpan data Diskusi ke database
-            Diskusi::where('id', $diskusiId)->update($data);
-            // Commit transaksi database
-            DB::commit();
+            ]; // Menyiapkan data untuk update diskusi
 
-            // Berikan respons sukses jika semuanya berjalan lancar
-            return response()->json(['message' => 'Diskusi berhasil dibuat'], 200);
+            Diskusi::where('id', $diskusiId)->update($data); // Mengupdate data diskusi di database
+
+            DB::commit(); // Melakukan commit transaksi database
+
+            return response()->json(['message' => 'Diskusi berhasil diupdate'], 200); // Memberikan respons sukses
         } catch (Exception $e) {
-            return response()->json(['message' => 'Error'], 200);
+            return response()->json(['message' => 'Error'], 200); // Memberikan respons error jika terjadi kesalahan
         }
     }
 
@@ -201,27 +209,27 @@ class DiskusiController extends Controller
      */
     public function destroyDiskusi(Request $request)
     {
+        $diskusiId = $request->hapusId; // Mendapatkan ID diskusi dari inputan form request
 
-        // Dapatkan Id Diskusi dari Inputan Form request
-        $diskusiId = $request->hapusId;
+        foreach (Auth()->User()->EditorAccess as $key) { // Loop untuk memeriksa akses editor pengguna
+            if ($key->kelas_mapel_id == $request->kelasMapelId) { // Memeriksa apakah pengguna memiliki akses ke kelasMapel
+                Diskusi::where('id', $diskusiId)->delete(); // Menghapus diskusi berdasarkan ID
 
-        // Logika untuk memeriksa apakah pengguna yang sudah login memiliki akses editor
-        foreach (Auth()->User()->EditorAccess as $key) {
-            if ($key->kelas_mapel_id == $request->kelasMapelId) {
-                Diskusi::where('id', $diskusiId)->delete();
-
-                return redirect()->back()->with('success', 'Diskusi Berhasil dihapus');
+                return redirect()->back()->with('success', 'Diskusi Berhasil dihapus'); // Mengarahkan kembali dengan pesan sukses
             }
         }
-        abort(404);
+        abort(404); // Mengembalikan halaman 404 jika pengguna tidak memiliki akses
     }
-
 
     public function redirectBack(Request $request)
     {
-        $mapelId = request('amp;mapelId');
-        $message = request('amp;message');
+        $mapelId = request('amp;mapelId'); // Mendapatkan mapelId dari request
+        $message = request('amp;message'); // Mendapatkan pesan dari request
 
-        return redirect(route('viewKelasMapel', ['mapel' => $mapelId, 'token' => encrypt($request->kelasId), 'mapel_id' => $mapelId]))->with('success', 'Data Berhasil di ' . $message);
+        return redirect(route('viewKelasMapel', [
+            'mapel' => $mapelId,
+            'token' => encrypt($request->kelasId),
+            'mapel_id' => $mapelId
+        ]))->with('success', 'Data Berhasil di ' . $message); // Mengarahkan kembali dengan pesan sukses
     }
 }

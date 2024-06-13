@@ -19,13 +19,6 @@ use Maatwebsite\Excel\Facades\Excel;
  *
  * Class ini memuat beragam Function yang mengacu terhadap Manipulasi, Pencarian, Delete, Create Siswa. Function is on Unordered List.
  *
- * @copyright  2023 Sunday Interactive
- * @license    http://www.zend.com/license/3_0.txt   PHP License 3.0
- *
- * @version    Release: 1.0
- *
- * @link       http://dev.zend.com/package/PackageName
- * @since      Class available since Release 1.0
  */
 class DataSiswaController extends Controller
 {

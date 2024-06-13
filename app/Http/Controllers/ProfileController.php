@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers; // Mendefinisikan namespace untuk controller
 
-use App\Models\User;
-use App\Models\Kelas;
-use App\Models\Mapel;
-use App\Models\Contact;
-use App\Models\KelasMapel;
-use App\Models\EditorAccess;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Crypt;
-use Illuminate\Support\Facades\Storage;
+use App\Models\User; // Mengimpor model User
+use App\Models\Kelas; // Mengimpor model Kelas
+use App\Models\Mapel; // Mengimpor model Mapel
+use App\Models\Contact; // Mengimpor model Contact
+use App\Models\KelasMapel; // Mengimpor model KelasMapel
+use App\Models\EditorAccess; // Mengimpor model EditorAccess
+use Illuminate\Http\Request; // Mengimpor kelas Request
+use Illuminate\Support\Facades\Crypt; // Mengimpor kelas Crypt dari Illuminate\Support\Facades
+use Illuminate\Support\Facades\Storage; // Mengimpor kelas Storage dari Illuminate\Support\Facades
 
-class ProfileController extends Controller
+class ProfileController extends Controller // Mendefinisikan kelas ProfileController yang merupakan turunan dari Controller
 {
     /**
      * Menampilkan profil pengajar berdasarkan token.
@@ -20,32 +20,32 @@ class ProfileController extends Controller
      * @param  string  $token
      * @return \Illuminate\View\View
      */
-    public function viewProfilePengajar($token)
+    public function viewProfilePengajar($token) // Fungsi untuk menampilkan profil pengajar berdasarkan token
     {
         try {
-            $id = Crypt::decrypt($token);
-            $roles = DashboardController::getRolesName();
-            $profile = User::findOrFail($id);
-            $editorAccess = EditorAccess::where('user_id', $id)->get();
+            $id = Crypt::decrypt($token); // Mendekripsi token menjadi ID
+            $roles = DashboardController::getRolesName(); // Mendapatkan peran pengguna
+            $profile = User::findOrFail($id); // Mendapatkan data pengguna berdasarkan ID
+            $editorAccess = EditorAccess::where('user_id', $id)->get(); // Mendapatkan akses editor berdasarkan ID pengguna
 
-            $mapelKelas = [];
+            $mapelKelas = []; // Inisialisasi array mapelKelas
 
-            foreach ($editorAccess as $key) {
-                $kelasMapel = KelasMapel::where('id', $key->kelas_mapel_id)->first();
+            foreach ($editorAccess as $key) { // Looping melalui akses editor
+                $kelasMapel = KelasMapel::where('id', $key->kelas_mapel_id)->first(); // Mendapatkan data kelasMapel berdasarkan ID
 
-                if ($kelasMapel) {
-                    $mapelID = $kelasMapel->mapel_id;
-                    $kelasID = $kelasMapel->kelas_id;
+                if ($kelasMapel) { // Pemeriksaan jika kelasMapel ada
+                    $mapelID = $kelasMapel->mapel_id; // Mendapatkan ID mapel
+                    $kelasID = $kelasMapel->kelas_id; // Mendapatkan ID kelas
 
                     // Pemeriksaan mapel
-                    $mapelKey = array_search($mapelID, array_column($mapelKelas, 'mapel_id'));
+                    $mapelKey = array_search($mapelID, array_column($mapelKelas, 'mapel_id')); // Mencari key mapel dalam array mapelKelas
 
-                    if ($mapelKey !== false) {
+                    if ($mapelKey !== false) { // Pemeriksaan jika key mapel ditemukan
                         // Tambahkan ke Array
-                        $mapelKelas[$mapelKey]['kelas'][] = Kelas::where('id', $kelasID)->first();
+                        $mapelKelas[$mapelKey]['kelas'][] = Kelas::where('id', $kelasID)->first(); // Menambahkan data kelas ke dalam array
                     } else {
                         // Temukan Mapel
-                        $mapelKelas[] = [
+                        $mapelKelas[] = [ // Menambahkan data mapel baru ke dalam array
                             'mapel_id' => $mapelID,
                             'mapel' => Mapel::where('id', $mapelID)->first(),
                             'kelas' => [Kelas::where('id', $kelasID)->first()],
@@ -54,11 +54,11 @@ class ProfileController extends Controller
                 }
             }
 
-            $assignedKelas = DashboardController::getAssignedClass();
+            $assignedKelas = DashboardController::getAssignedClass(); // Mendapatkan kelas yang di-assign
 
-            return view('menu.profile.profilePengajar', ['assignedKelas' => $assignedKelas, 'user' => $profile, 'mapelKelas' => $mapelKelas,  'roles' => $roles, 'title' => 'Profil']);
-        } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
-            abort(404);
+            return view('menu.profile.profilePengajar', ['assignedKelas' => $assignedKelas, 'user' => $profile, 'mapelKelas' => $mapelKelas,  'roles' => $roles, 'title' => 'Profil']); // Menampilkan view profil pengajar dengan data yang diperlukan
+        } catch (\Illuminate\Contracts\Encryption\DecryptException $e) { // Menangani exception DecryptException
+            abort(404); // Menghentikan proses dan menampilkan error 404
         }
     }
 
@@ -68,34 +68,35 @@ class ProfileController extends Controller
      * @param  string  $token
      * @return \Illuminate\View\View
      */
-    public function viewProfileSiswa($token)
+    public function viewProfileSiswa($token) // Fungsi untuk menampilkan profil siswa berdasarkan token
     {
         try {
-            $id = Crypt::decrypt($token);
+            $id = Crypt::decrypt($token); // Mendekripsi token menjadi ID
 
-            $roles = DashboardController::getRolesName();
-            $profile = User::findOrFail($id);
+            $roles = DashboardController::getRolesName(); // Mendapatkan peran pengguna
+            $profile = User::findOrFail($id); // Mendapatkan data pengguna berdasarkan ID
 
-            $kelas = Kelas::where('id', $profile->kelas_id)->first();
+            $kelas = Kelas::where('id', $profile->kelas_id)->first(); // Mendapatkan data kelas berdasarkan ID kelas pengguna
 
-            $kelasMapel = KelasMapel::where('kelas_id', $kelas['id'])->get();
-            $mapelCollection = [];
+            $kelasMapel = KelasMapel::where('kelas_id', $kelas['id'])->get(); // Mendapatkan data kelasMapel berdasarkan ID kelas
+            $mapelCollection = []; // Inisialisasi array mapelCollection
 
-            foreach ($kelasMapel as $key) {
-                $mapel = Mapel::where('id', $key->mapel_id)->first();
-                $editorAccess = EditorAccess::where('kelas_mapel_id', $key->id)->first();
+            foreach ($kelasMapel as $key) { // Looping melalui kelasMapel
+                $mapel = Mapel::where('id', $key->mapel_id)->first(); // Mendapatkan data mapel berdasarkan ID
 
-                if ($editorAccess) {
-                    $editorAccess = $editorAccess['user_id'];
-                    $pengajar = User::where('id', $editorAccess)->first(['id', 'name']);
-                    $pengajarNama = $pengajar['name'];
-                    $pengajarId = $pengajar['id'];
+                $editorAccess = EditorAccess::where('kelas_mapel_id', $key->id)->first(); // Mendapatkan akses editor berdasarkan ID kelasMapel
+
+                if ($editorAccess) { // Pemeriksaan jika akses editor ada
+                    $editorAccess = $editorAccess['user_id']; // Mendapatkan ID pengguna akses editor
+                    $pengajar = User::where('id', $editorAccess)->first(['id', 'name']); // Mendapatkan data pengajar berdasarkan ID
+                    $pengajarNama = $pengajar['name']; // Mendapatkan nama pengajar
+                    $pengajarId = $pengajar['id']; // Mendapatkan ID pengajar
                 } else {
-                    $pengajarNama = '-';
-                    $pengajarId = null;
+                    $pengajarNama = '-'; // Jika akses editor tidak ada, beri tanda '-'
+                    $pengajarId = null; // Set ID pengajar menjadi null
                 }
 
-                $mapelCollection[] = [
+                $mapelCollection[] = [ // Menambahkan data mapel ke dalam array mapelCollection
                     'mapel_name' => $mapel['name'],
                     'mapel_id' => $mapel['id'],
                     'deskripsi' => $mapel['deskripsi'],
@@ -105,11 +106,11 @@ class ProfileController extends Controller
                 ];
             }
 
-            $assignedKelas = DashboardController::getAssignedClass();
+            $assignedKelas = DashboardController::getAssignedClass(); // Mendapatkan kelas yang di-assign
 
-            return view('menu.profile.profileSiswa', ['assignedKelas' => $assignedKelas, 'user' => $profile, 'kelas' => $kelas, 'mapelKelas' => $mapelCollection, 'roles' => $roles, 'title' => 'Profil']);
-        } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
-            abort(404);
+            return view('menu.profile.profileSiswa', ['assignedKelas' => $assignedKelas, 'user' => $profile, 'kelas' => $kelas, 'mapelKelas' => $mapelCollection, 'roles' => $roles, 'title' => 'Profil']); // Menampilkan view profil siswa dengan data yang diperlukan
+        } catch (\Illuminate\Contracts\Encryption\DecryptException $e) { // Menangani exception DecryptException
+            abort(404); // Menghentikan proses dan menampilkan error 404
         }
     }
 
@@ -120,38 +121,38 @@ class ProfileController extends Controller
      */
 
 
-     public function cropImageUser(Request $request)
+     public function cropImageUser(Request $request) // Fungsi untuk mengelola pengunggahan gambar profil pengguna
      {
-         $request->validate([
-             'file' => 'file|image|max:4000',
+         $request->validate([ // Validasi request
+             'file' => 'file|image|max:4000', // Validasi file yang diunggah
          ]);
      
-         if ($request->hasFile('file')) {
-             $file = $request->file('file');
-             $newImageName = 'UIMG' . date('YmdHis') . uniqid() . '.jpg'; // Nama baru
+         if ($request->hasFile('file')) { // Pemeriksaan jika terdapat file yang diunggah
+             $file = $request->file('file'); // Mendapatkan file yang diunggah
+             $newImageName = 'UIMG' . date('YmdHis') . uniqid() . '.jpg'; // Generate nama baru
      
              // Simpan file ke dalam folder public/img-upload
-             $path = $file->move(public_path('img-upload'), $newImageName);
+             $path = $file->move(public_path('img-upload'), $newImageName); // Memindahkan file ke direktori yang ditentukan
      
-             if (!$path) {
-                 return response()->json(['status' => 0, 'msg' => 'Upload Gagal']);
+             if (!$path) { // Pemeriksaan jika penyimpanan gagal
+                 return response()->json(['status' => 0, 'msg' => 'Upload Gagal']); // Respon gagal
              }
      
              // Hapus file gambar lama dari penyimpanan
-             $userInfo = User::find($request->id);
-             $userPhoto = $userInfo->gambar;
+             $userInfo = User::find($request->id); // Mendapatkan data pengguna berdasarkan ID
+             $userPhoto = $userInfo->gambar; // Mendapatkan nama gambar pengguna
      
-             if ($userPhoto != null && file_exists(public_path('img-upload/' . $userPhoto))) {
-                 unlink(public_path('img-upload/' . $userPhoto));
+             if ($userPhoto != null && file_exists(public_path('img-upload/' . $userPhoto))) { // Pemeriksaan jika gambar lama ada
+                 unlink(public_path('img-upload/' . $userPhoto)); // Menghapus gambar lama
              }
      
              // Perbarui gambar
-             $userInfo->update(['gambar' => $newImageName]);
+             $userInfo->update(['gambar' => $newImageName]); // Memperbarui nama gambar pengguna
      
-             return response()->json(['status' => 1, 'msg' => 'Upload berhasil', 'name' => $newImageName]);
+             return response()->json(['status' => 1, 'msg' => 'Upload berhasil', 'name' => $newImageName]); // Respon sukses
          }
      
-         return response()->json(['status' => 0, 'msg' => 'Tidak ada file yang diunggah']);
+         return response()->json(['status' => 0, 'msg' => 'Tidak ada file yang diunggah']); // Respon jika tidak ada file yang diunggah
      }
      
 
@@ -162,34 +163,35 @@ class ProfileController extends Controller
      * @param  string  $token
      * @return \Illuminate\View\View
      */
-    public function myProfile($token)
+    public function myProfile($token) // Fungsi untuk menampilkan profil pengguna sendiri
     {
         try {
-            $id = Crypt::decrypt($token);
+            $id = Crypt::decrypt($token); // Mendekripsi token menjadi ID
 
-            $roles = DashboardController::getRolesName();
-            $profile = User::findOrFail($id);
+            $roles = DashboardController::getRolesName(); // Mendapatkan peran pengguna
+            $profile = User::findOrFail($id); // Mendapatkan data pengguna berdasarkan ID
 
-            $kelas = Kelas::where('id', $profile->kelas_id)->first();
+            $kelas = Kelas::where('id', $profile->kelas_id)->first(); // Mendapatkan data kelas berdasarkan ID kelas pengguna
 
-            $kelasMapel = KelasMapel::where('kelas_id', $kelas['id'])->get();
-            $mapelCollection = [];
+            $kelasMapel = KelasMapel::where('kelas_id', $kelas['id'])->get(); // Mendapatkan data kelasMapel berdasarkan ID kelas
+            $mapelCollection = []; // Inisialisasi array mapelCollection
 
-            foreach ($kelasMapel as $key) {
-                $mapel = Mapel::where('id', $key->mapel_id)->first();
-                $editorAccess = EditorAccess::where('kelas_mapel_id', $key->id)->first();
+            foreach ($kelasMapel as $key) { // Looping melalui kelasMapel
+                $mapel = Mapel::where('id', $key->mapel_id)->first(); // Mendapatkan data mapel berdasarkan ID
 
-                if ($editorAccess) {
-                    $editorAccess = $editorAccess['user_id'];
-                    $pengajar = User::where('id', $editorAccess)->first(['id', 'name']);
-                    $pengajarNama = $pengajar['name'];
-                    $pengajarId = $pengajar['id'];
+                $editorAccess = EditorAccess::where('kelas_mapel_id', $key->id)->first(); // Mendapatkan akses editor berdasarkan ID kelasMapel
+
+                if ($editorAccess) { // Pemeriksaan jika akses editor ada
+                    $editorAccess = $editorAccess['user_id']; // Mendapatkan ID pengguna akses editor
+                    $pengajar = User::where('id', $editorAccess)->first(['id', 'name']); // Mendapatkan data pengajar berdasarkan ID
+                    $pengajarNama = $pengajar['name']; // Mendapatkan nama pengajar
+                    $pengajarId = $pengajar['id']; // Mendapatkan ID pengajar
                 } else {
-                    $pengajarNama = '-';
-                    $pengajarId = null;
+                    $pengajarNama = '-'; // Jika akses editor tidak ada, beri tanda '-'
+                    $pengajarId = null; // Set ID pengajar menjadi null
                 }
 
-                $mapelCollection[] = [
+                $mapelCollection[] = [ // Menambahkan data mapel ke dalam array mapelCollection
                     'mapel_name' => $mapel['name'],
                     'mapel_id' => $mapel['id'],
                     'deskripsi' => $mapel['deskripsi'],
@@ -199,11 +201,11 @@ class ProfileController extends Controller
                 ];
             }
 
-            $assignedKelas = DashboardController::getAssignedClass();
+            $assignedKelas = DashboardController::getAssignedClass(); // Mendapatkan kelas yang di-assign
 
-            return view('menu.profile.profileSiswa', ['assignedKelas' => $assignedKelas, 'user' => $profile, 'kelas' => $kelas['name'], 'mapelKelas' => $mapelCollection, 'roles' => $roles, 'title' => 'Profil']);
-        } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
-            abort(404);
+            return view('menu.profile.profileSiswa', ['assignedKelas' => $assignedKelas, 'user' => $profile, 'kelas' => $kelas['name'], 'mapelKelas' => $mapelCollection, 'roles' => $roles, 'title' => 'Profil']); // Menampilkan view profil siswa dengan data yang diperlukan
+        } catch (\Illuminate\Contracts\Encryption\DecryptException $e) { // Menangani exception DecryptException
+            abort(404); // Menghentikan proses dan menampilkan error 404
         }
     }
 
@@ -213,24 +215,24 @@ class ProfileController extends Controller
      * @param  string  $token
      * @return \Illuminate\View\View
      */
-    public function viewProfileSetting($token)
+    public function viewProfileSetting($token) // Fungsi untuk menampilkan halaman pengaturan profil pengguna
     {
         try {
-            $id = Crypt::decrypt($token);
-            $roles = DashboardController::getRolesName();
+            $id = Crypt::decrypt($token); // Mendekripsi token menjadi ID
+            $roles = DashboardController::getRolesName(); // Mendapatkan peran pengguna
 
-            if ($id == Auth()->User()->id) {
-                $user = User::where('id', $id)->first();
-                $contact = Contact::where('user_id', $id)->first();
-                $kelas = Kelas::where('id', Auth()->User()->kelas_id)->first();
-                $assignedKelas = DashboardController::getAssignedClass();
+            if ($id == Auth()->User()->id) { // Pemeriksaan jika ID sama dengan ID pengguna yang sedang login
+                $user = User::where('id', $id)->first(); // Mendapatkan data pengguna berdasarkan ID
+                $contact = Contact::where('user_id', $id)->first(); // Mendapatkan data kontak berdasarkan ID pengguna
+                $kelas = Kelas::where('id', Auth()->User()->kelas_id)->first(); // Mendapatkan data kelas berdasarkan ID kelas pengguna
+                $assignedKelas = DashboardController::getAssignedClass(); // Mendapatkan kelas yang di-assign
 
-                return view('menu.profile.setting.settingUser', ['assignedKelas' => $assignedKelas, 'kelas' => $kelas, 'user' => $user, 'contact' => $contact, 'title' => 'Profil Setting', 'roles' => $roles]);
+                return view('menu.profile.setting.settingUser', ['assignedKelas' => $assignedKelas, 'kelas' => $kelas, 'user' => $user, 'contact' => $contact, 'title' => 'Profil Setting', 'roles' => $roles]); // Menampilkan view pengaturan profil pengguna dengan data yang diperlukan
             } else {
-                abort(404);
+                abort(404); // Menghentikan proses dan menampilkan error 404
             }
-        } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
-            abort(404);
+        } catch (\Illuminate\Contracts\Encryption\DecryptException $e) { // Menangani exception DecryptException
+            abort(404); // Menghentikan proses dan menampilkan error 404
         }
     }
 }

@@ -1,28 +1,28 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers; // Mendefinisikan namespace untuk controller
 
-use Exception;
-use App\Models\Mapel;
-use App\Models\KelasMapel;
-use App\Exports\MapelExport;
-use App\Imports\MapelImport;
-use App\Models\EditorAccess;
-use Illuminate\Http\Request;
-use Maatwebsite\Excel\Facades\Excel;
-use Illuminate\Support\Facades\Storage;
+use Exception; // Mengimpor kelas Exception
+use App\Models\Mapel; // Mengimpor model Mapel
+use App\Models\KelasMapel; // Mengimpor model KelasMapel
+use App\Exports\MapelExport; // Mengimpor kelas MapelExport
+use App\Imports\MapelImport; // Mengimpor kelas MapelImport
+use App\Models\EditorAccess; // Mengimpor model EditorAccess
+use Illuminate\Http\Request; // Mengimpor kelas Request
+use Maatwebsite\Excel\Facades\Excel; // Mengimpor kelas Excel dari Maatwebsite
+use Illuminate\Support\Facades\Storage; // Mengimpor kelas Storage dari Illuminate
 
-class MapelController extends Controller
+class MapelController extends Controller // Mendefinisikan kelas MapelController yang merupakan turunan dari Controller
 {
     /**
      * Menampilkan halaman daftar mapel.
      *
      * @return \Illuminate\View\View
      */
-    public function viewMapel()
+    public function viewMapel() // Fungsi untuk menampilkan halaman daftar mapel
     {
         // Ambil peran pengguna
-        $roles = DashboardController::getRolesName();
+        $roles = DashboardController::getRolesName(); // Memanggil fungsi getRolesName dari DashboardController
 
         // Tampilkan halaman daftar mapel dengan data mapel yang dipaginasi
         return view('menu.admin.controlMapel.viewMapel', ['title' => 'Data Mapel', 'roles' => $roles, 'mapel' => Mapel::paginate(15)]);
@@ -33,12 +33,12 @@ class MapelController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function searchMapel(Request $request)
+    public function searchMapel(Request $request) // Fungsi untuk mencari mapel berdasarkan kriteria tertentu
     {
-        $search = $request->input('search');
-        $mapel = Mapel::where('name', 'like', '%' . $search . '%')->paginate(15);
+        $search = $request->input('search'); // Mengambil inputan 'search' dari request
+        $mapel = Mapel::where('name', 'like', '%' . $search . '%')->paginate(15); // Mencari mapel berdasarkan nama dengan pola tertentu
 
-        return view('menu.admin.controlMapel.partials.mapelTable', compact('mapel'))->render();
+        return view('menu.admin.controlMapel.partials.mapelTable', compact('mapel'))->render(); // Menampilkan hasil pencarian mapel dalam bentuk tabel
     }
 
     /**
@@ -46,18 +46,18 @@ class MapelController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function tambahEditorAccess(Request $request)
+    public function tambahEditorAccess(Request $request) // Fungsi untuk menambahkan akses editor untuk mapel tertentu
     {
-        $kelasMapel = KelasMapel::where('kelas_id', $request->kelasId)->where('mapel_id', $request->mapelId)->first();
+        $kelasMapel = KelasMapel::where('kelas_id', $request->kelasId)->where('mapel_id', $request->mapelId)->first(); // Mengambil data kelas-mapel berdasarkan kelas_id dan mapel_id
 
         $temp = [
             'user_id' => $request->userId,
             'kelas_mapel_id' => $kelasMapel['id'],
         ];
 
-        EditorAccess::create($temp);
+        EditorAccess::create($temp); // Membuat data akses editor baru
 
-        return response()->json(['response' => 'Added']);
+        return response()->json(['response' => 'Added']); // Memberikan respons JSON 'Added'
     }
 
     /**
@@ -65,18 +65,18 @@ class MapelController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function deleteEditorAccess(Request $request)
+    public function deleteEditorAccess(Request $request) // Fungsi untuk menghapus akses editor untuk mapel tertentu
     {
-        $kelasMapel = KelasMapel::where('kelas_id', $request->kelasId)->where('mapel_id', $request->mapelId)->first();
+        $kelasMapel = KelasMapel::where('kelas_id', $request->kelasId)->where('mapel_id', $request->mapelId)->first(); // Mengambil data kelas-mapel berdasarkan kelas_id dan mapel_id
 
         if ($kelasMapel) {
             $kelasMapelId = $kelasMapel->id;
 
-            EditorAccess::where('kelas_mapel_id', $kelasMapelId)->delete();
+            EditorAccess::where('kelas_mapel_id', $kelasMapelId)->delete(); // Menghapus akses editor berdasarkan kelas_mapel_id
 
-            return response()->json(['response' => 'Deleted']);
+            return response()->json(['response' => 'Deleted']); // Memberikan respons JSON 'Deleted'
         } else {
-            return response()->json(['response' => 'Data tidak ditemukan'], 404);
+            return response()->json(['response' => 'Data tidak ditemukan'], 404); // Memberikan respons JSON 'Data tidak ditemukan' dengan status 404
         }
     }
 
@@ -85,11 +85,11 @@ class MapelController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function viewTambahMapel()
+    public function viewTambahMapel() // Fungsi untuk menampilkan halaman tambah mapel
     {
-        $roles = DashboardController::getRolesName();
+        $roles = DashboardController::getRolesName(); // Memanggil fungsi getRolesName dari DashboardController
 
-        return view('menu.admin.controlMapel.viewTambahMapel', ['title' => 'Tambah Mapel', 'roles' => $roles]);
+        return view('menu.admin.controlMapel.viewTambahMapel', ['title' => 'Tambah Mapel', 'roles' => $roles]); // Menampilkan halaman tambah mapel
     }
 
     /**
@@ -97,11 +97,11 @@ class MapelController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function viewUpdateMapel(Mapel $mapel)
+    public function viewUpdateMapel(Mapel $mapel) // Fungsi untuk menampilkan halaman update mapel
     {
-        $roles = DashboardController::getRolesName();
+        $roles = DashboardController::getRolesName(); // Memanggil fungsi getRolesName dari DashboardController
 
-        return view('menu.admin.controlMapel.updateMapel', ['title' => 'Update Mapel', 'roles' => $roles, 'mapel' => $mapel]);
+        return view('menu.admin.controlMapel.updateMapel', ['title' => 'Update Mapel', 'roles' => $roles, 'mapel' => $mapel]); // Menampilkan halaman update mapel
     }
 
     /**
@@ -109,9 +109,9 @@ class MapelController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function cekKelasMapel(Request $request)
+    public function cekKelasMapel(Request $request) // Fungsi untuk memeriksa apakah mapel sudah terhubung ke kelas tertentu
     {
-        $response = KelasMapel::where('kelas_id', $request->kelasId)->where('mapel_id', $request->mapelId)->first();
+        $response = KelasMapel::where('kelas_id', $request->kelasId)->where('mapel_id', $request->mapelId)->first(); // Mencari data kelas-mapel berdasarkan kelas_id dan mapel_id
 
         if (count($response->EditorAccess) > 0) {
             return response()->json(['response' => '1']); // Pesan jika memiliki akses Editor
@@ -125,7 +125,7 @@ class MapelController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function validateNamaMapel(Request $request)
+    public function validateNamaMapel(Request $request) // Fungsi untuk validasi data mapel sebelum penyimpanan
     {
         $request->validate([
             'name' => 'required|unique:Mapels',
@@ -142,7 +142,7 @@ class MapelController extends Controller
             'deskripsi' => $desk,
         ];
 
-        Mapel::create($data);
+        Mapel::create($data); // Membuat data mapel baru
 
         // Mencari id Mapel terakhir
         $mapelId = Mapel::latest()->first();
@@ -155,7 +155,7 @@ class MapelController extends Controller
         ];
         session(['data' => $data]);
 
-        return redirect(route('dataMapelSuccess'));
+        return redirect(route('dataMapelSuccess')); // Redirect ke halaman sukses data mapel ditambahkan
     }
 
     /**
@@ -163,7 +163,7 @@ class MapelController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function updateMapel(Request $request)
+    public function updateMapel(Request $request) // Fungsi untuk memperbarui data mapel
     {
         $request->validate([
             'nama' => 'required',
@@ -180,9 +180,9 @@ class MapelController extends Controller
             'deskripsi' => $desk,
         ];
 
-        Mapel::where('id', $request->id)->update($data);
+        Mapel::where('id', $request->id)->update($data); // Memperbarui data mapel berdasarkan id
 
-        return redirect()->back()->with('success', 'Update berhasil!');
+        return redirect()->back()->with('success', 'Update berhasil!'); // Redirect kembali dengan pesan sukses
     }
 
     /**
@@ -190,7 +190,7 @@ class MapelController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function addChangeEditorAccess(Request $request)
+    public function addChangeEditorAccess(Request $request) // Fungsi untuk menambah atau mengubah akses editor untuk mapel tertentu
     {
 
         $kelasMapelId = KelasMapel::where('kelas_id', $request->kelasId)->where('mapel_id', $request->mapelId)->first();
@@ -226,7 +226,7 @@ class MapelController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function mapelTambahGambar(Request $request)
+    public function mapelTambahGambar(Request $request) // Fungsi untuk menangani penambahan gambar untuk mapel
     {
         $request->validate([
             'file' => 'file|image|max:4000',
@@ -267,7 +267,7 @@ class MapelController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function searchKelasMapel(Request $request)
+    public function searchKelasMapel(Request $request) // Fungsi untuk mencari kelas-mapel yang terkait dengan kelas tertentu
     {
 
         $kelasMapel = KelasMapel::where('kelas_id', $request->kelasId)->get();
@@ -292,7 +292,7 @@ class MapelController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function dataMapelSuccess()
+    public function dataMapelSuccess() // Fungsi untuk menampilkan halaman sukses data mapel ditambahkan
     {
         if (session('data') != null) {
             $data = session('data');
@@ -310,7 +310,7 @@ class MapelController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroyMapel(Request $request)
+    public function destroyMapel(Request $request) // Fungsi untuk menghapus data mapel beserta kelas-mapel dan akses editor yang terkait
     {
         Mapel::destroy($request->idHapus);
         KelasMapel::where('mapel_id', $request->idHapus)->delete();
@@ -326,7 +326,7 @@ class MapelController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
      */
-    public function contohMapel()
+    public function contohMapel() // Fungsi untuk mengunduh contoh data mapel dalam format Excel
     {
         // File PDF disimpan di dalam project/public/download/info.pdf
         $file = public_path() . '/examples/contoh-data-mapel.xls';
@@ -339,7 +339,7 @@ class MapelController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
      */
-    public function export()
+    public function export() // Fungsi untuk mengunduh data kelas dalam format Excel
     {
         return Excel::download(new MapelExport, 'export-mapel.xls');
     }
@@ -349,7 +349,7 @@ class MapelController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function import(Request $request)
+    public function import(Request $request) // Fungsi untuk mengimpor data kelas dari file Excel
     {
         $request->validate([
             'file' => 'required|mimes:xlsx,xls',

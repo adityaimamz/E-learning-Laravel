@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\EditorAccess;
-use App\Models\Kelas;
-use App\Models\KelasMapel;
-use App\Models\Mapel;
-use App\Models\Tugas;
-use App\Models\TugasFile;
-use App\Models\User;
-use App\Models\UserTugas;
-use App\Models\UserTugasFile;
-use Exception;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Models\EditorAccess; // Menggunakan model EditorAccess
+use App\Models\Kelas; // Menggunakan model Kelas
+use App\Models\KelasMapel; // Menggunakan model KelasMapel
+use App\Models\Mapel; // Menggunakan model Mapel
+use App\Models\Tugas; // Menggunakan model Tugas
+use App\Models\TugasFile; // Menggunakan model TugasFile
+use App\Models\User; // Menggunakan model User
+use App\Models\UserTugas; // Menggunakan model UserTugas
+use App\Models\UserTugasFile; // Menggunakan model UserTugasFile
+use Exception; // Menggunakan kelas Exception
+use Illuminate\Http\Request; // Menggunakan kelas Request dari Illuminate
+use Illuminate\Support\Facades\DB; // Menggunakan DB dari Illuminate\Support\Facades
 
 class TugasController extends Controller
 {
@@ -22,59 +22,59 @@ class TugasController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function viewTugas(Request $request)
+    public function viewTugas(Request $request) // Fungsi untuk menampilkan halaman Tugas
     {
         // Tugas id
-        $id = decrypt($request->token);
+        $id = decrypt($request->token); // Mendekripsi token dari request
         //kelasMapel id
-        $idx = decrypt($request->kelasMapelId);
+        $idx = decrypt($request->kelasMapelId); // Mendekripsi kelasMapelId dari request
 
-        $tugas = Tugas::where('id', $id)->first();
+        $tugas = Tugas::where('id', $id)->first(); // Mengambil data Tugas berdasarkan id
 
-        $roles = DashboardController::getRolesName();
-        $kelasMapel = KelasMapel::where('id', $tugas->kelas_mapel_id)->first();
+        $roles = DashboardController::getRolesName(); // Mendapatkan nama roles dari DashboardController
+        $kelasMapel = KelasMapel::where('id', $tugas->kelas_mapel_id)->first(); // Mengambil data KelasMapel berdasarkan id
 
         // Dapatkan Pengajar
-        $editorAccess = EditorAccess::where('kelas_mapel_id', $kelasMapel['id'])->first();
-        $editorData = User::where('id', $editorAccess['user_id'])->where('roles_id', 2)->first();
+        $editorAccess = EditorAccess::where('kelas_mapel_id', $kelasMapel['id'])->first(); // Mendapatkan akses editor berdasarkan kelasMapel
+        $editorData = User::where('id', $editorAccess['user_id'])->where('roles_id', 2)->first(); // Mendapatkan data pengguna dengan roles_id 2
 
-        $mapel = Mapel::where('id', $request->mapelId)->first();
-        $kelas = Kelas::where('id', $kelasMapel['kelas_id'])->first();
+        $mapel = Mapel::where('id', $request->mapelId)->first(); // Mengambil data Mapel berdasarkan mapelId dari request
+        $kelas = Kelas::where('id', $kelasMapel['kelas_id'])->first(); // Mengambil data Kelas berdasarkan kelasMapel
 
-        $tugasAll = Tugas::where('kelas_mapel_id', $idx)->get();
+        $tugasAll = Tugas::where('kelas_mapel_id', $idx)->get(); // Mengambil semua data Tugas berdasarkan kelasMapel id
 
-        $userTugas = UserTugas::where('tugas_id', $tugas['id'])->where('user_id', Auth()->User()->id)->first();
+        $userTugas = UserTugas::where('tugas_id', $tugas['id'])->where('user_id', Auth()->User()->id)->first(); // Mendapatkan data UserTugas berdasarkan tugas_id dan user_id
 
-        $assignedKelas = DashboardController::getAssignedClass();
+        $assignedKelas = DashboardController::getAssignedClass(); // Mendapatkan kelas yang di-assign
 
-        return view('menu.pengajar.tugas.viewTugas', ['userTugas' => $userTugas, 'assignedKelas' => $assignedKelas, 'editor' => $editorData, 'tugas' => $tugas, 'kelas' => $kelas, 'title' => $tugas->name, 'roles' => $roles, 'tugasAll' => $tugasAll, 'mapel' => $mapel, 'kelasMapel' => $kelasMapel]);
+        return view('menu.pengajar.tugas.viewTugas', ['userTugas' => $userTugas, 'assignedKelas' => $assignedKelas, 'editor' => $editorData, 'tugas' => $tugas, 'kelas' => $kelas, 'title' => $tugas->name, 'roles' => $roles, 'tugasAll' => $tugasAll, 'mapel' => $mapel, 'kelasMapel' => $kelasMapel]); // Menampilkan view dengan data yang diperlukan
     }
-    public function viewTugasAdmin(Request $request)
+    public function viewTugasAdmin(Request $request) // Fungsi untuk menampilkan halaman Tugas Admin
     {
         // Tugas id
-        $id = decrypt($request->token);
+        $id = decrypt($request->token); // Mendekripsi token dari request
         //kelasMapel id
-        $idx = decrypt($request->kelasMapelId);
+        $idx = decrypt($request->kelasMapelId); // Mendekripsi kelasMapelId dari request
 
-        $tugas = Tugas::where('id', $id)->first();
+        $tugas = Tugas::where('id', $id)->first(); // Mengambil data Tugas berdasarkan id
 
-        $roles = DashboardController::getRolesName();
-        $kelasMapel = KelasMapel::where('id', $tugas->kelas_mapel_id)->first();
+        $roles = DashboardController::getRolesName(); // Mendapatkan nama roles dari DashboardController
+        $kelasMapel = KelasMapel::where('id', $tugas->kelas_mapel_id)->first(); // Mengambil data KelasMapel berdasarkan id
 
         // Dapatkan Pengajar
-        $editorAccess = EditorAccess::where('kelas_mapel_id', $kelasMapel['id'])->first();
-        $editorData = User::where('id', $editorAccess['user_id'])->where('roles_id', 2)->first();
+        $editorAccess = EditorAccess::where('kelas_mapel_id', $kelasMapel['id'])->first(); // Mendapatkan akses editor berdasarkan kelasMapel
+        $editorData = User::where('id', $editorAccess['user_id'])->where('roles_id', 2)->first(); // Mendapatkan data pengguna dengan roles_id 2
 
-        $mapel = Mapel::where('id', $request->mapelId)->first();
-        $kelas = Kelas::where('id', $kelasMapel['kelas_id'])->first();
+        $mapel = Mapel::where('id', $request->mapelId)->first(); // Mengambil data Mapel berdasarkan mapelId dari request
+        $kelas = Kelas::where('id', $kelasMapel['kelas_id'])->first(); // Mengambil data Kelas berdasarkan kelasMapel
 
-        $tugasAll = Tugas::where('kelas_mapel_id', $idx)->get();
+        $tugasAll = Tugas::where('kelas_mapel_id', $idx)->get(); // Mengambil semua data Tugas berdasarkan kelasMapel id
 
-        $userTugas = UserTugas::where('tugas_id', $tugas['id'])->where('user_id', Auth()->User()->id)->first();
+        $userTugas = UserTugas::where('tugas_id', $tugas['id'])->where('user_id', Auth()->User()->id)->first(); // Mendapatkan data UserTugas berdasarkan tugas_id dan user_id
 
-        $assignedKelas = DashboardController::getAssignedClass();
+        $assignedKelas = DashboardController::getAssignedClass(); // Mendapatkan kelas yang di-assign
 
-        return view('menu.pengajar.tugas.viewTugasAdmin', ['userTugas' => $userTugas, 'assignedKelas' => $assignedKelas, 'editor' => $editorData, 'tugas' => $tugas, 'kelas' => $kelas, 'title' => $tugas->name, 'roles' => $roles, 'tugasAll' => $tugasAll, 'mapel' => $mapel, 'kelasMapel' => $kelasMapel]);
+        return view('menu.pengajar.tugas.viewTugasAdmin', ['userTugas' => $userTugas, 'assignedKelas' => $assignedKelas, 'editor' => $editorData, 'tugas' => $tugas, 'kelas' => $kelas, 'title' => $tugas->name, 'roles' => $roles, 'tugasAll' => $tugasAll, 'mapel' => $mapel, 'kelasMapel' => $kelasMapel]); // Menampilkan view dengan data yang diperlukan
     }
 
     /**
@@ -82,49 +82,49 @@ class TugasController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function siswaUpdateNilai(Request $request)
+    public function siswaUpdateNilai(Request $request) // Fungsi untuk mengupdate nilai siswa
     {
-        $id = decrypt($request->token);
+        $id = decrypt($request->token); // Mendekripsi token dari request
 
         // Request SiswaId[], nilai[],
 
         // $userTugas = UserTugas::where('tugas_id', $id)->get();
 
         // Looping semua nilai user inputan
-        for ($i = 0; $i < count($request->nilai); $i++) {
+        for ($i = 0; $i < count($request->nilai); $i++) { // Looping untuk setiap nilai yang diinputkan
             // Memeriksa apakah nilai tidak sama dengan null dan tidak sama dengan string kosong
-            if ($request->nilai[$i] !== null && $request->nilai[$i] !== '') {
-                $exist = UserTugas::where('tugas_id', $id)->where('user_id', $request->siswaId[$i])->first();
+            if ($request->nilai[$i] !== null && $request->nilai[$i] !== '') { // Memeriksa apakah nilai valid
+                $exist = UserTugas::where('tugas_id', $id)->where('user_id', $request->siswaId[$i])->first(); // Memeriksa apakah data UserTugas sudah ada
 
                 // Nilai Cap
-                $nilai = $request->nilai[$i];
+                $nilai = $request->nilai[$i]; // Mengambil nilai
 
-                if ($nilai >= 100) {
-                    $nilai = 100;
-                } elseif ($nilai <= 0) {
-                    $nilai = 0;
+                if ($nilai >= 100) { // Memeriksa apakah nilai lebih dari atau sama dengan 100
+                    $nilai = 100; // Set nilai menjadi 100
+                } elseif ($nilai <= 0) { // Memeriksa apakah nilai kurang dari atau sama dengan 0
+                    $nilai = 0; // Set nilai menjadi 0
                 }
 
                 // dd($exist);
-                if ($exist) {
-                    $data = [
+                if ($exist) { // Jika data UserTugas sudah ada
+                    $data = [ // Data yang akan diupdate
                         'status' => 'Telah dinilai',
                         'nilai' => $nilai,
                     ];
-                    $exist->update($data);
-                } else {
-                    $data = [
+                    $exist->update($data); // Update data UserTugas
+                } else { // Jika data UserTugas belum ada
+                    $data = [ // Data yang akan disimpan
                         'tugas_id' => $id,
                         'user_id' => $request->siswaId[$i],
                         'status' => 'Telah dinilai',
                         'nilai' => $nilai,
                     ];
-                    UserTugas::create($data);
+                    UserTugas::create($data); // Simpan data UserTugas baru
                 }
             }
         }
 
-        return redirect()->back()->with('success', 'Nilai Telah diPerbaharui');
+        return redirect()->back()->with('success', 'Nilai Telah diPerbaharui'); // Redirect kembali dengan pesan sukses
     }
 
     /**
@@ -133,24 +133,24 @@ class TugasController extends Controller
      * @param  string  $token
      * @return \Illuminate\View\View
      */
-    public function viewCreateTugas($token, Request $request)
+    public function viewCreateTugas($token, Request $request) // Fungsi untuk menampilkan halaman tambah Tugas
     {
         // id = Kelas Id
-        $id = decrypt($token);
-        $kelasMapel = KelasMapel::where('mapel_id', $request->mapelId)->where('kelas_id', $id)->first();
+        $id = decrypt($token); // Mendekripsi token dari parameter
+        $kelasMapel = KelasMapel::where('mapel_id', $request->mapelId)->where('kelas_id', $id)->first(); // Mengambil data KelasMapel berdasarkan mapelId dan kelasId
 
         // Logika untuk memeriksa apakah pengguna yang sudah login memiliki akses editor
-        foreach (Auth()->User()->EditorAccess as $key) {
-            if ($key->kelas_mapel_id == $kelasMapel['id']) {
-                $roles = DashboardController::getRolesName();
-                $mapel = Mapel::where('id', $request->mapelId)->first();
+        foreach (Auth()->User()->EditorAccess as $key) { // Looping untuk setiap EditorAccess pengguna
+            if ($key->kelas_mapel_id == $kelasMapel['id']) { // Memeriksa apakah pengguna memiliki akses editor pada kelasMapel tertentu
+                $roles = DashboardController::getRolesName(); // Mendapatkan nama roles dari DashboardController
+                $mapel = Mapel::where('id', $request->mapelId)->first(); // Mengambil data Mapel berdasarkan mapelId dari request
 
-                $assignedKelas = DashboardController::getAssignedClass();
+                $assignedKelas = DashboardController::getAssignedClass(); // Mendapatkan kelas yang di-assign
 
-                return view('menu.pengajar.tugas.viewTambahTugas', ['assignedKelas' => $assignedKelas, 'title' => 'Tambah Tugas', 'roles' => $roles, 'kelasId' => $id, 'mapel' => $mapel]);
+                return view('menu.pengajar.tugas.viewTambahTugas', ['assignedKelas' => $assignedKelas, 'title' => 'Tambah Tugas', 'roles' => $roles, 'kelasId' => $id, 'mapel' => $mapel]); // Menampilkan view dengan data yang diperlukan
             }
         }
-        abort(404);
+        abort(404); // Menghentikan proses dan menampilkan error 404
     }
 
     /**
@@ -159,29 +159,29 @@ class TugasController extends Controller
      * @param  string  $token
      * @return \Illuminate\View\View
      */
-    public function viewUpdateTugas($token, Request $request)
+    public function viewUpdateTugas($token, Request $request) // Fungsi untuk menampilkan halaman update Tugas
     {
         // token = Tugas Id
-        $id = decrypt($token);
+        $id = decrypt($token); // Mendekripsi token dari parameter
         $tugas = Tugas::where('id', $id)->first();  // Dapatkan tugas
 
         // Dapatkan kelas mapel untuk dibandingkan dengan tugas
-        $kelasMapel = KelasMapel::where('id', $tugas->kelas_mapel_id)->first();
+        $kelasMapel = KelasMapel::where('id', $tugas->kelas_mapel_id)->first(); // Mengambil data KelasMapel berdasarkan id tugas
 
         // Logika untuk memeriksa apakah pengguna yang sudah login memiliki akses editor
-        foreach (Auth()->User()->EditorAccess as $key) {
-            if ($key->kelas_mapel_id == $kelasMapel['id']) {
-                $roles = DashboardController::getRolesName();
-                $mapel = Mapel::where('id', $request->mapelId)->first();
+        foreach (Auth()->User()->EditorAccess as $key) { // Looping untuk setiap EditorAccess pengguna
+            if ($key->kelas_mapel_id == $kelasMapel['id']) { // Memeriksa apakah pengguna memiliki akses editor pada kelasMapel tertentu
+                $roles = DashboardController::getRolesName(); // Mendapatkan nama roles dari DashboardController
+                $mapel = Mapel::where('id', $request->mapelId)->first(); // Mengambil data Mapel berdasarkan mapelId dari request
 
-                $kelas = Kelas::where('id', $kelasMapel['kelas_id'])->first('id');
+                $kelas = Kelas::where('id', $kelasMapel['kelas_id'])->first('id'); // Mengambil data Kelas berdasarkan kelasMapel
 
-                $assignedKelas = DashboardController::getAssignedClass();
+                $assignedKelas = DashboardController::getAssignedClass(); // Mendapatkan kelas yang di-assign
 
-                return view('menu.pengajar.tugas.viewUpdateTugas', ['assignedKelas' => $assignedKelas, 'title' => 'Update Tugas', 'tugas' => $tugas, 'roles' => $roles, 'kelasId' => $kelas['id'], 'mapel' => $mapel, 'kelasMapel' => $kelasMapel]);
+                return view('menu.pengajar.tugas.viewUpdateTugas', ['assignedKelas' => $assignedKelas, 'title' => 'Update Tugas', 'tugas' => $tugas, 'roles' => $roles, 'kelasId' => $kelas['id'], 'mapel' => $mapel, 'kelasMapel' => $kelasMapel]); // Menampilkan view dengan data yang diperlukan
             }
         }
-        abort(404);
+        abort(404); // Menghentikan proses dan menampilkan error 404
     }
 
     /**
@@ -189,33 +189,31 @@ class TugasController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function createTugas(Request $request)
+    public function createTugas(Request $request) // Fungsi untuk membuat Tugas baru
     {
         // Lakukan validasi untuk inputan form
         // return response()->json(['message' => $request->input()], 200);
 
-        $request->validate([
+        $request->validate([ // Validasi inputan form
             'name' => 'required',
             'content' => 'required',
             'due' => 'required',
         ]);
         // return response()->json(['message' => $request->due], 200);
-        $tanggalWaktuIndonesia = \Carbon\Carbon::createFromFormat('Y-m-d H:i', $request->due);
-        // return response()->json(['message' => $tanggalWaktuIndonesia], 200);
-        // return response()->json(['message' => now()], 200);
+        $tanggalWaktuIndonesia = \Carbon\Carbon::createFromFormat('Y-m-d H:i', $request->due); // Mengubah format tanggal dan waktu
 
         try {
             // Dekripsi token dan dapatkan KelasMapel
-            $token = decrypt($request->kelasId);
-            $kelasMapel = KelasMapel::where('mapel_id', $request->mapelId)->where('kelas_id', $token)->first();
+            $token = decrypt($request->kelasId); // Mendekripsi token dari request
+            $kelasMapel = KelasMapel::where('mapel_id', $request->mapelId)->where('kelas_id', $token)->first(); // Mengambil data KelasMapel
 
             $isHidden = 1;
 
-            if ($request->opened) {
+            if ($request->opened) { // Jika tugas dibuka
                 $isHidden = 0;
             }
 
-            $temp = [
+            $temp = [ // Data tugas baru
                 'kelas_mapel_id' => $kelasMapel['id'],
                 'name' => $request->name,
                 'content' => $request->content,
@@ -224,15 +222,15 @@ class TugasController extends Controller
             ];
 
             // Simpan data Tugas ke database
-            Tugas::create($temp);
+            Tugas::create($temp); // Membuat data Tugas baru
 
             // Commit transaksi database
-            DB::commit();
+            DB::commit(); // Melakukan commit transaksi database
 
             // Berikan respons sukses jika semuanya berjalan lancar
-            return response()->json(['message' => 'Tugas berhasil dibuat'], 200);
+            return response()->json(['message' => 'Tugas berhasil dibuat'], 200); // Respon sukses
         } catch (Exception $e) {
-            return response()->json(['message' => 'Error'], 200);
+            return response()->json(['message' => 'Error'], 200); // Respon error
         }
     }
 
@@ -241,10 +239,10 @@ class TugasController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function updateTugas(Request $request)
+    public function updateTugas(Request $request) // Fungsi untuk mengupdate Tugas
     {
         // Lakukan validasi untuk inputan form
-        $request->validate([
+        $request->validate([ // Validasi inputan form
             'name' => 'required',
             'content' => 'required',
             'due' => 'required',
