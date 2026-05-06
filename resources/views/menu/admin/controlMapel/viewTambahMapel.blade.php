@@ -39,7 +39,7 @@
                             <div class="mb-3">
                                 <label for="nama" class="form-label">Nama</label>
                                 <input type="text" class="form-control" id="nama" name="name"
-                                    placeholder="Inputkan nama kelas... " value="{{ old('name') }}" required>
+                                    placeholder="Inputkan nama mata pelajaran... " value="{{ old('name') }}" required>
                                 @error('name')
                                     <div class="text-danger small">
                                         {{ $message }}
@@ -47,8 +47,7 @@
                                 @enderror
                             </div>
                             <div class="mb-3">
-                                <label for="nama" class="form-label">Deskripsi <span
-                                        class="small text-info">(Opsional)</span></label>
+                                <label for="nama" class="form-label">Deskripsi </label>
                                 <textarea class="form-control" name="deskripsi" value="{{ old('deskripsi') }}" aria-label="With textarea"
                                     placeholder="Inputkan deskripsi mapel...">{{ old('deskripsi') }}</textarea>
                             </div>

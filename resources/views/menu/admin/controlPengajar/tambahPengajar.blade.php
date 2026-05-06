@@ -24,7 +24,7 @@
             Tambah Pengajar
         </h2>
 
-        <nav style="" aria-label="breadcrumb">
+        <nav aria-label="breadcrumb">
             <ol class="breadcrumb bg-light">
                 <li class="breadcrumb-item text-info">Step 1</li>
                 <li class="breadcrumb-item">Step 2</li>
@@ -46,7 +46,10 @@
                                 <div class="mb-3">
                                     <label for="nama" class="form-label">Nama : </label>
                                     <input type="text" class="form-control" id="nama" name="nama"
-                                        placeholder="Aditya Kesuma, S.H, M.Kom" value="{{ old('nama') }}" required>
+                                        placeholder="Aditya Kesuma, S.H, M.Kom" value="{{ old('nama') }}" maxlength="30" required>
+                                    <div class="errors text-danger" style="font-size: 14px" hidden id="namaError">
+                                        Nama tidak boleh melebihi 30 karakter
+                                    </div>
                                     @error('nama')
                                         <div class="text-danger small">
                                             {{ $message }}
@@ -70,20 +73,27 @@
                                 <div class="mb-3">
                                     <label for="noTelp" class="form-label">Nomor Telepon
                                         <span class="text-secondary small">(Optional)</span> : </label>
-                                    <input type="number" class="form-control" id="noTelp" name="noTelp"
-                                        placeholder="0851xxxxxxxx" value="{{ old('noTelp') }}">
+                                        <input type="text" class="form-control" id="noTelp" name="noTelp"
+                                        placeholder="08xxxxxxx" value="{{ old('noTelp') }}" maxlength="14" required>
+                                    <div class="errors text-danger" style="font-size: 14px" hidden id="noTelpError">
+                                        Nomor telepon tidak boleh melebihi 14 karakter
+                                    </div>
                                     @error('noTelp')
                                         <div class="text-danger small">
                                             {{ $message }}
                                         </div>
                                     @enderror
                                 </div>
+
                                 <!-- NUPTK -->
                                 <div class="mb-3">
                                     <label for="nuptk" class="form-label">NUPTK <span
                                             class="text-secondary small">(Optional)</span> : </label>
-                                    <input type="number" class="form-control" id="nuptk" name="nuptk" placeholder=""
-                                        value="{{ old('nuptk') }}">
+                                    <input type="text" class="form-control" id="nuptk" name="nuptk" placeholder=""
+                                        value="{{ old('nuptk') }}" maxlength="16">
+                                    <div class="errors text-danger" style="font-size: 14px" hidden id="nuptkError">
+                                        NUPTK tidak boleh melebihi 16 karakter
+                                    </div>
                                     @error('nuptk')
                                         <div class="text-danger small">
                                             {{ $message }}
@@ -95,15 +105,17 @@
                                 <div class="mb-3">
                                     <label for="nik" class="form-label">NIK <span
                                             class="text-secondary small">(Optional)</span> : </label>
-                                    <input type="number" class="form-control" id="nik" name="nik" placeholder=""
-                                        value="{{ old('nik') }}">
+                                    <input type="text" class="form-control" id="nik" name="nik" placeholder=""
+                                        value="{{ old('nik') }}" maxlength="16">
+                                    <div class="errors text-danger" style="font-size: 14px" hidden id="nikError">
+                                        NIK tidak boleh melebihi 16 karakter
+                                    </div>
                                     @error('nik')
                                         <div class="text-danger small">
                                             {{ $message }}
                                         </div>
                                     @enderror
                                 </div>
-
 
                                 {{-- Password --}}
                                 <div class="mb-3">
@@ -151,4 +163,48 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('input', function (event) {
+            const target = event.target;
+            let errorElement = null;
+            let maxLength = 0;
+
+            switch (target.id) {
+                case 'nama':
+                    errorElement = document.getElementById('namaError');
+                    maxLength = 30;
+                    break;
+                case 'noTelp':
+                    errorElement = document.getElementById('noTelpError');
+                    maxLength = 14;
+                    break;
+                case 'nuptk':
+                    errorElement = document.getElementById('nuptkError');
+                    maxLength = 16;
+                    break;
+                case 'nik':
+                    errorElement = document.getElementById('nikError');
+                    maxLength = 16;
+                    break;
+            }
+
+            if (errorElement) {
+                if (target.value.length >= maxLength) {
+                    errorElement.hidden = false;
+                } else {
+                    errorElement.hidden = true;
+                }
+            }
+        });
+
+        document.addEventListener('keydown', function (event) {
+            const target = event.target;
+            const isNumericField = target.id === 'noTelp' || target.id === 'nuptk' || target.id === 'nik';
+
+            if (isNumericField && !event.key.match(/[0-9]/) && event.key !== 'Backspace' && event.key !== 'Tab' && event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') {
+                event.preventDefault();
+            }
+        });
+    </script>
 @endsection

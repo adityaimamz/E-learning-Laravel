@@ -69,8 +69,7 @@
                             </div>
                             {{-- Konten Pengumuman --}}
                             <div class="mb-3">
-                                <label for="nama" class="form-label">Konten <span
-                                        class="small text-info">(Opsional)</span></label>
+                                <label for="nama" class="form-label">Konten </label>
                                 <textarea id="tinymce" name="content"></textarea>
                             </div>
                             {{-- Tombol Submit --}}

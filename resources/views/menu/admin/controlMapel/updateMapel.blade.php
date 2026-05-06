@@ -78,8 +78,7 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="nama" class="form-label">Deskripsi <span
-                                        class="small text-info">(Opsional)</span></label>
+                                <label for="nama" class="form-label">Deskripsi </label>
                                 <textarea class="form-control" name="deskripsi" placeholder="Inputkan deskripsi mapel...">{{ old('deskripsi', $mapel->deskripsi) }}</textarea>
                             </div>
 

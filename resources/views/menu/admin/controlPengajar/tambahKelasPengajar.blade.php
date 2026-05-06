@@ -80,7 +80,7 @@
 
                                 <div class="mb-3">
                                     <label for="nuptk" class="form-label">NUPTK :</label>
-                                    <input type="text" class="form-control" id="nuptk" name="nuptk"
+                                    <input type="number" class="form-control" id="nuptk" name="nuptk"
                                         placeholder="NUPTK" value="{{ old('nuptk', $data['nuptk']) }}" readonly
                                         required>
                                     @error('nuptk')

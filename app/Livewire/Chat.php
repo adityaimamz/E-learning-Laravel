@@ -16,13 +16,23 @@ class Chat extends Component // Mendefinisikan kelas Chat yang merupakan turunan
 
     public function mount() // Method yang dipanggil saat komponen di-mount
     {
-        $this->selectedUserId = User::where('id', '!=', Auth::id())->first()->id; // Mengatur selectedUserId dengan ID user selain user yang sedang login
-        $this->loadMessages(); // Memuat pesan-pesan
+        $user = User::where('id', '!=', Auth::id())->first();
+        if ($user) {
+            $this->selectedUserId = $user->id;
+            $this->loadMessages(); // Memuat pesan-pesan
+        } else {
+            $this->messages = collect();
+        }
         $this->loadUnreadMessagesCount(); // Memuat jumlah pesan yang belum dibaca
     }
 
     public function loadMessages() // Method untuk memuat pesan-pesan
     {
+        if (!$this->selectedUserId) {
+            $this->messages = collect();
+            return;
+        }
+
         $this->messages = Message::where(function($query) { // Mengambil pesan dari user yang sedang login ke user yang dipilih
             $query->where('from_user_id', Auth::id())
                   ->where('to_user_id', $this->selectedUserId);
@@ -54,7 +64,7 @@ class Chat extends Component // Mendefinisikan kelas Chat yang merupakan turunan
 
     public function sendMessage() // Method untuk mengirim pesan
     {
-        if ($this->messageText != '') { // Jika teks pesan tidak kosong
+        if ($this->messageText != '' && $this->selectedUserId) { // Jika teks pesan tidak kosong dan ada user terpilih
             Message::create([ // Membuat pesan baru
                 'from_user_id' => Auth::id(),
                 'to_user_id' => $this->selectedUserId,

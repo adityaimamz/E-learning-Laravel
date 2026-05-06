@@ -69,14 +69,12 @@
                             </div>
                             {{-- Konten Materi --}}
                             <div class="mb-3">
-                                <label for="nama" class="form-label">Konten <span
-                                        class="small text-info">(Opsional)</span></label>
+                                <label for="nama" class="form-label">Konten </label>
                                 <textarea id="tinymce" id="content2" name="content"></textarea>
                             </div>
                             {{-- Konten Materi --}}
                             <div class="mb-3">
-                                <label for="uploadFile" class="form-label">Upload <span
-                                        class="small text-info">(Opsional)</span></label>
+                                <label for="uploadFile" class="form-label">Upload </label>
                                 <!-- Dropzone -->
                                 <div id="my-dropzone" class="dropzone"></div>
                             </div>

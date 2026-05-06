@@ -72,8 +72,7 @@
                             </div>
                             {{-- Konten Materi --}}
                             <div class="mb-3">
-                                <label for="nama" class="form-label">Konten <span
-                                        class="small text-info">(Opsional)</span></label>
+                                <label for="nama" class="form-label">Konten </label>
                                 <textarea id="tinymce" name="content">
                                     {{ $materi['content'] }}
                                 </textarea>
@@ -85,8 +84,7 @@
                             </div>
                             {{-- Dropzone --}}
                             <div class="mb-3">
-                                <label for="uploadFile" class="form-label">Upload <span
-                                        class="small text-info">(Opsional)</span></label>
+                                <label for="uploadFile" class="form-label">Upload </label>
                                 <!-- Dropzone -->
                                 <div id="my-dropzone" class="dropzone"></div>
                             </div>

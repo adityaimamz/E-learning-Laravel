@@ -68,6 +68,8 @@ class PengajarController extends Controller
             'email' => 'required|email|unique:users',
             'password' => 'required|min:8',
             'confirm-password' => 'required|min:8|same:password',
+            'nuptk' => 'numeric|digits:16|unique:users',
+            'nik' => 'max:16|unique:users',
         ]);
 
         $data = [
